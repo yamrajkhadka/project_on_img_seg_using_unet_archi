@@ -8,12 +8,12 @@ from skimage.measure import label
 from scipy.ndimage import median_filter
 
 # --- Load class colors from CSV ---
-@st.cache_data
+@st.cache_data #caches data outputs,here cache tell streamlit to store the result in memory..hence avoid reloading of data(DataFrames (from pandas),list,dict,numpy array,other non-resource obj)
 def load_class_colors(csv_path='class_dict.csv'):
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path) #to store in the dataframe...easy in data manupulation
     return list(zip(df['r'], df['g'], df['b']))
 
-color_map = load_class_colors()
+color_map = load_class_colors() #later used to convert class mask to rgb for visualization
 
 # --- Load model ---
 @st.cache_resource

@@ -7,13 +7,29 @@ from skimage.morphology import remove_small_objects, remove_small_holes
 from skimage.measure import label
 from scipy.ndimage import median_filter
 
-# --- Load class colors from CSV ---
+# --- Load class colors from CSV ---needed as the o/p of model is a 2d numpy array as mask has pixel(r,gb) visually looks like [ 
+                                                                                                                                  #[0,5,6......], --->pixels as  class level
+                                                                                                                                  #[3,4,1,5,0,1],
+                                                                                                                                #] ..it is grey scale img,wrong visualization 
 @st.cache_data #caches data outputs,here cache tell streamlit to store the result in memory..hence avoid reloading of data(DataFrames (from pandas),list,dict,numpy array,other non-resource obj)
 def load_class_colors(csv_path='class_dict.csv'):
-    df = pd.read_csv(csv_path) #to store in the dataframe...easy in data manupulation
-    return list(zip(df['r'], df['g'], df['b']))
+    df = pd.read_csv(csv_path) #to store in the dataframe...easy in data manupulation and it looks like     name   r  g  b 
+                                                                                                        #0  urban 0  255 255 -----> which is sky pixel color 
+                                                                                                        #1 ...............so df['r'] looks like  [0, 255, 255, 0, 0, 255, 0]...
+    
+    return list(zip(df['r'], df['g'], df['b'])) #zip combine color row by row 
 
 color_map = load_class_colors() #later used to convert class mask to rgb for visualization
+"""the alternative way of aligning the class_to_color is hardcoding ...like color_map_legend = {
+    0: (0, 255, 255),   # Urban
+    1: (255, 255, 0),   # Agriculture
+    2: (255, 0, 255),   # Rangeland
+    3: (0, 255, 0),     # Forest
+    4: (0, 0, 255),     # Water
+    5: (255, 255, 255), # Barren
+    6: (0, 0, 0),       # Unknown
+} ----->but it is not flexible and not so good class >20."""
+
 
 # --- Load model ---
 @st.cache_resource

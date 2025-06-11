@@ -20,7 +20,8 @@ def load_class_colors(csv_path='class_dict.csv'):
     return list(zip(df['r'], df['g'], df['b'])) #zip combine color row by row 
 
 color_map = load_class_colors() #later used to convert class mask to rgb for visualization
-"""the alternative way of aligning the class_to_color is hardcoding ...like color_map_legend = {
+"""
+the alternative way of aligning the class_to_color is hardcoding ...like color_map_legend = {
     0: (0, 255, 255),   # Urban
     1: (255, 255, 0),   # Agriculture
     2: (255, 0, 255),   # Rangeland
@@ -28,7 +29,8 @@ color_map = load_class_colors() #later used to convert class mask to rgb for vis
     4: (0, 0, 255),     # Water
     5: (255, 255, 255), # Barren
     6: (0, 0, 0),       # Unknown
-} ----->but it is not flexible and not so good class >20."""
+} ----->but it is not flexible and not so good class >20.
+"""
 
 
 # --- Load model ---

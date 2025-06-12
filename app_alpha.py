@@ -6,7 +6,15 @@ from tensorflow.keras.models import load_model
 from skimage.morphology import remove_small_objects, remove_small_holes
 from skimage.measure import label #to remove the tiny area(noise) and to identify seperate obj //to give name tag to each land so later keep and throw based in the shape.
                                   # imagine i convert the predicted mask into binary mask..where a 1s means the current class,i am currently processing and 0s are others,
-                                  #say my mask 
+                                  #say i want to clean or analyze the predicted mask for 1 class(pixel) at a time seperately. eg class 3(range land) and the class mask is 
+                                  #the class mask is [                        the binary mask for this is [                   now, the label() gives (as label only works in binary number)
+                                                    # [0, 3, 3, 0],                                          [0, 1, 1, 0],                              [[0, 1, 1, 0], -->as its 1 is connected to lower 1
+                                                     # [0, 3, 0, 1],                                          [0, 1, 0, 0],                             [0, 1, 0, 0], -->as its 1 is connected to upper 1
+                                                     #[2, 0, 3, 3],]                                           [0, 0, 1, 1]]                             [0, 0, 2, 2]] -->as its 1 is not connected and diagonal 1 is not allowed
+                                  
+                                                     
+                                               
+                                                                                   
 from scipy.ndimage import median_filter
 
 # --- Load class colors from CSV ---needed as the o/p of model is a 2d numpy array as mask has pixel(r,gb) visually looks like [ 

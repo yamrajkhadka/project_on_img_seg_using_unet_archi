@@ -60,10 +60,10 @@ def class_to_rgb(mask):
 
 # --- Morphological Postprocessing ---
 def postprocess_mask(mask_class, min_size=64, hole_area=64):
-    processed = np.zeros_like(mask_class)
-    for cls in np.unique(mask_class):
-        if cls == 0:
-            continue
+    processed = np.zeros_like(mask_class) #initialize an empty mask,to assign later a cleaned mask
+    for cls in np.unique(mask_class): #looping to the unique class label in mask 
+       
+            
         binary = (mask_class == cls)
         binary = remove_small_objects(label(binary), min_size=min_size)
         binary = remove_small_holes(binary, area_threshold=hole_area)

@@ -80,7 +80,7 @@ def median_smoothing(mask_class, size=3):
     return smoothed
 
 # --- Streamlit App UI ---
-st.title("DeepGlobe Land Cover Segmentation with Postprocessing")
+st.title("🌍 DeepGlobe Land Cover Segmentation")
 
 uploaded_file = st.file_uploader("Upload an RGB satellite image (recommended size: 224x224)", type=["jpg", "png"])
 

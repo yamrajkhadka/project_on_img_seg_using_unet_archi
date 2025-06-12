@@ -1,21 +1,20 @@
+# --- Import Libraries ---
 import streamlit as st
 import numpy as np
 import cv2
 import pandas as pd
 from tensorflow.keras.models import load_model
 from skimage.morphology import remove_small_objects, remove_small_holes
-from skimage.measure import label #to remove the tiny area(noise) and to identify seperate obj //to give name tag to each land so later keep and throw based in the shape.
+from skimage.measure import label  #to remove the tiny area(noise) and to identify seperate obj //to give name tag to each land so later keep and throw based in the shape.
                                   # imagine i convert the predicted mask into binary mask..where a 1s means the current class,i am currently processing and 0s are others,
                                   #say i want to clean or analyze the predicted mask for 1 class(pixel) at a time seperately. eg class 3(range land) and the class mask is 
                                   #the class mask is [                        the binary mask for this is [                   now, the label() gives (as label only works in binary number)
                                                     # [0, 3, 3, 0],                                          [0, 1, 1, 0],                              [[0, 1, 1, 0], -->as its 1 is connected to lower 1
                                                      # [0, 3, 0, 1],                                          [0, 1, 0, 0],                             [0, 1, 0, 0], -->as its 1 is connected to upper 1
                                                      #[2, 0, 3, 3],]                                           [0, 0, 1, 1]]                             [0, 0, 2, 2]] -->as its 1 is not connected and diagonal 1 is not allowed
-                                  
-                                                     
-                                               
-                                                                                   
-from scipy.ndimage import median_filter
+from scipy.ndimage import median_filter  # for median smoothing
+
+
 
 # --- Load class colors from CSV ---needed as the o/p of model is a 2d numpy array as mask has pixel(r,gb) visually looks like [ 
                                                                                                                                   #[0,5,6......], --->pixels as  class level
@@ -23,12 +22,11 @@ from scipy.ndimage import median_filter
                                                                                                                                 #] ..it is grey scale img,wrong visualization 
 @st.cache_data #caches data outputs,here cache tell streamlit to store the result in memory..hence avoid reloading of data(DataFrames (from pandas),list,dict,numpy array,other non-resource obj)
 def load_class_colors(csv_path='class_dict.csv'):
-    df = pd.read_csv(csv_path) #to store in the dataframe...easy in data manupulation and it looks like     name   r  g  b 
-                                                                                                        #0  urban 0  255 255 -----> which is sky pixel color 
-                                                                                                        #1 ...............so df['r'] looks like  [0, 255, 255, 0, 0, 255, 0]...
-    
-    return list(zip(df['r'], df['g'], df['b'])) #zip combine color row by row 
-
+    df = pd.read_csv(csv_path)
+    # suppose df looks like:   name      r    g    b
+    #                         Urban    0   255  255
+    #                         ...      ...
+    return list(zip(df['r'], df['g'], df['b']))  # zip combines per row (r, g, b)
 color_map = load_class_colors() #later used to convert class mask to rgb for visualization
 
 # the alternative way of aligning the class_to_color is hardcoding ...like color_map_legend = {
@@ -43,7 +41,7 @@ color_map = load_class_colors() #later used to convert class mask to rgb for vis
 
 
 # --- Load model ---
-@st.cache_resource
+@st.cache_resource  # for caching heavy resource like model
 def load_unet_model(model_path='deepglobe_unet_jay.keras'):
     model = load_model(model_path, compile=False)
     return model
@@ -58,7 +56,7 @@ def class_to_rgb(mask):
         rgb[mask == i] = color
     return rgb
 
-# --- Morphological postprocessing ---
+# --- Morphological Postprocessing ---
 def postprocess_mask(mask_class, min_size=64, hole_area=64):
     processed = np.zeros_like(mask_class)
     for cls in np.unique(mask_class):
@@ -70,7 +68,7 @@ def postprocess_mask(mask_class, min_size=64, hole_area=64):
         processed[binary] = cls
     return processed
 
-# --- Median smoothing ---
+# --- Median smoothing (class-wise median filter) ---
 def median_smoothing(mask_class, size=3):
     smoothed = np.zeros_like(mask_class)
     for cls in np.unique(mask_class):
@@ -79,7 +77,7 @@ def median_smoothing(mask_class, size=3):
         smoothed[filtered > 0] = cls
     return smoothed
 
-# --- Streamlit UI ---
+# --- Streamlit App UI ---
 st.title("DeepGlobe Land Cover Segmentation with Postprocessing")
 
 uploaded_file = st.file_uploader("Upload an RGB satellite image (recommended size: 224x224)", type=["jpg", "png"])
@@ -95,23 +93,31 @@ if uploaded_file is not None:
 
     st.image(img_rgb, caption="Original Image", use_column_width=True)
 
+    # Predict only when button is clicked
     if st.button("Segment and Postprocess"):
         softmax_pred = model.predict(np.expand_dims(img_norm, 0))[0]
         raw_mask = np.argmax(softmax_pred, axis=-1)
 
         morph_mask = postprocess_mask(raw_mask)
 
-        use_smoothing = st.checkbox("Apply Median Smoothing Postprocessing", value=False)
-        if use_smoothing:
-            final_mask = median_smoothing(morph_mask)
-        else:
-            final_mask = morph_mask
+        st.session_state["morph_mask"] = morph_mask  # to use with smoothing toggle
+        st.session_state["segmented"] = True
 
-        # Display only final postprocessed mask
-        st.subheader("Segmentation Result")
-        st.image(class_to_rgb(final_mask), use_column_width=True)
+# Toggle for median smoothing (checkbox always shown)
+use_smoothing = st.checkbox("Apply Median Smoothing Postprocessing", value=False)
 
-# --- Class Legend ---
+# Display segmented output
+if "segmented" in st.session_state and st.session_state["segmented"]:
+    morph_mask = st.session_state["morph_mask"]
+    if use_smoothing:
+        final_mask = median_smoothing(morph_mask)
+    else:
+        final_mask = morph_mask
+
+    st.subheader("Segmentation Result")
+    st.image(class_to_rgb(final_mask), use_column_width=True)
+
+# --- Display Legend ---
 st.subheader("📘 Class Color Legend")
 
 color_map_legend = {
@@ -134,9 +140,11 @@ class_names = [
     "Unknown"
 ]
 
+# RGB to HEX converter
 def rgb_to_hex(rgb):
     return '#%02x%02x%02x' % rgb
 
+# Display as HTML table
 legend_html = "<table>"
 legend_html += "<tr><th>Class</th><th>Color</th></tr>"
 for idx, name in enumerate(class_names):

@@ -85,9 +85,9 @@ st.title("🌍 DeepGlobe Land Cover Segmentation")
 uploaded_file = st.file_uploader("Upload an RGB satellite image (recommended size: 224x224)", type=["jpg", "png"])
 
 if uploaded_file is not None:
-    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8)
-    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
-    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+    file_bytes = np.asarray(bytearray(uploaded_file.read()), dtype=np.uint8) #Converts the file into a NumPy byte array suitable for OpenCV.
+    img = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR) #decode the byte into the opencv img in bgr format 
+    img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB) 
 
     # Resize and normalize
     img_resized = cv2.resize(img_rgb, (224, 224))
@@ -97,8 +97,8 @@ if uploaded_file is not None:
 
     # Predict only when button is clicked
     if st.button("Segment and Postprocess"):
-        softmax_pred = model.predict(np.expand_dims(img_norm, 0))[0]
-        raw_mask = np.argmax(softmax_pred, axis=-1)
+        softmax_pred = model.predict(np.expand_dims(img_norm, 0))[0] #Converts the file into a NumPy byte array suitable for OpenCV.
+        raw_mask = np.argmax(softmax_pred, axis=-1)  # selects the class with the highest probability at each pixel.
 
         morph_mask = postprocess_mask(raw_mask)
 

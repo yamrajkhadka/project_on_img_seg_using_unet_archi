@@ -4,7 +4,9 @@ import cv2
 import pandas as pd
 from tensorflow.keras.models import load_model
 from skimage.morphology import remove_small_objects, remove_small_holes
-from skimage.measure import label
+from skimage.measure import label #to remove the tiny area(noise) and to identify seperate obj //to give name tag to each land so later keep and throw based in the shape.
+                                  # imagine i convert the predicted mask into binary mask..where a 1s means the current class,i am currently processing and 0s are others,
+                                  #say my mask 
 from scipy.ndimage import median_filter
 
 # --- Load class colors from CSV ---needed as the o/p of model is a 2d numpy array as mask has pixel(r,gb) visually looks like [ 

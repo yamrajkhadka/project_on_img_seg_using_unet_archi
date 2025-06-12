@@ -40,10 +40,10 @@ color_map = load_class_colors() #later used to convert class mask to rgb for vis
 # } -----> but it is not flexible and not so good class >20.
 
 
-# --- Load model ---
-@st.cache_resource  # for caching heavy resource like model
+# --- Load model --- 
+@st.cache_resource  # for caching heavy resource like model , purpose: To avoid Streamlit reruns the script top to bottom on every user interaction 
 def load_unet_model(model_path='deepglobe_unet_jay.keras'):
-    model = load_model(model_path, compile=False)
+    model = load_model(model_path, compile=False) #here the compile is not needed as focus is only on the prediction not a training the model
     return model
 
 model = load_unet_model()

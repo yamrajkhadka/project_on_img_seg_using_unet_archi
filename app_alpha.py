@@ -59,7 +59,7 @@ def class_to_rgb(mask):
     return rgb
 
 # --- Morphological Postprocessing ---
-def postprocess_mask(mask_class, min_size=1000, hole_area=1000):
+def postprocess_mask(mask_class, min_size=64, hole_area=64):
     processed = np.zeros_like(mask_class)
     for cls in np.unique(mask_class):
         if cls == 0:

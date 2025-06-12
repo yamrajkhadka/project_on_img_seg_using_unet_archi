@@ -52,8 +52,10 @@ model = load_unet_model()
 def class_to_rgb(mask):
     h, w = mask.shape
     rgb = np.zeros((h, w, 3), dtype=np.uint8)
-    for i, color in enumerate(color_map):
-        rgb[mask == i] = color
+    for i, color in enumerate(color_map): #enumerate()->This generates pairs: (i, color) so,(0, (0, 0, 255))
+                                                                                           #(1, (0, 255, 0))
+                                                                                           #(2, (255, 0, 0))...so on 
+        rgb[mask == i] = color  #1st Iteration (i = 0):mask == 0 finds all pixels in mask  where the class is 0. Sets rgb[mask == 0] = (0, 255, 255) → cyan and so on..
     return rgb
 
 # --- Morphological Postprocessing ---

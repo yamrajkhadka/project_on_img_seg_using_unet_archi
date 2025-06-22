@@ -63,10 +63,10 @@ Try it online:
 
 [Streamlit App](https://4classifying-every-pixel-of-the-planets.streamlit.app/)
 
-## How to Run Locally
+## Installation
 
-1. Clone the repository
+Make sure Python 3.7+ is installed. Then install the required libraries and run the app:
 
 ```bash
-git clone https://github.com/yamrajkhadka/project_on_img_seg_using_unet_archi.git
-cd project_on_img_seg_using_unet_archi
+pip install -r requirements.txt
+streamlit run streamlit_app.py

@@ -65,15 +65,10 @@ Try it online:
 
 ## Installation
 
-Make sure Python 3.7+ is installed. Then install the required libraries and run the app:
+Make sure Python 3.7 or higher is installed on your system. Then, install the required packages and launch the app:
 
-bash
+```bash
 pip install -r requirements.txt
 streamlit run streamlit_app.py
 
-
-##Author
-Yamraj Khadka
-BCT Student, IOE Purwanchal Campus, Dharan
-Email: khadkayamraj2002@gmail.com
 

@@ -1,0 +1,12 @@
+# Extra packages for the research scripts (not needed to run the app):
+#   scripts/convert_to_onnx.py     -> tensorflow, tf2onnx, onnx
+#   scripts/finetune_nepal.py      -> torch, h5py, onnx, onnxscript
+#   tests (optional reference)     -> scikit-image==0.21.0 reproduces the published post-processing
+-r requirements.txt
+torch>=2.3
+h5py>=3.10
+onnx>=1.16
+onnxscript>=0.1
+tensorflow>=2.18
+tf2onnx>=1.16
+pytest>=8

@@ -1,0 +1,733 @@
+{
+ "created": "2026-10-20T15:37:03+00:00",
+ "description": "132 random 1.22 km windows in 11 districts held out from training (Dhanusa, Ilam, Jumla, Kailali, Kaski, Lalitpur, Mustang, Rasuwa, Rupandehi, Sunsari, Surkhet); imagery and references from 2021; pixels the references mark as cloud/no-data excluded.",
+ "results": [
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Esri World Imagery (latest)",
+   "reference": "ESA WorldCover 2021",
+   "n": 6623232,
+   "overall": 0.6928,
+   "kappa": 0.5544,
+   "miou": 0.3842,
+   "iou": {
+    "Urban land": 0.2003,
+    "Agriculture land": 0.5369,
+    "Rangeland": 0.3677,
+    "Forest land": 0.711,
+    "Water": 0.1629,
+    "Barren land": 0.3265
+   },
+   "f1": {
+    "Urban land": 0.3338,
+    "Agriculture land": 0.6987,
+    "Rangeland": 0.5377,
+    "Forest land": 0.8311,
+    "Water": 0.2801,
+    "Barren land": 0.4922
+   },
+   "ref_share": {
+    "Urban land": 2.31,
+    "Agriculture land": 19.57,
+    "Rangeland": 17.26,
+    "Forest land": 52.02,
+    "Water": 0.32,
+    "Barren land": 8.53
+   },
+   "pred_share": {
+    "Urban land": 10.81,
+    "Agriculture land": 18.57,
+    "Rangeland": 19.81,
+    "Forest land": 44.72,
+    "Water": 0.4,
+    "Barren land": 5.69,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Esri World Imagery (latest)",
+   "reference": "Impact Observatory 2021",
+   "n": 6623232,
+   "overall": 0.7404,
+   "kappa": 0.6373,
+   "miou": 0.4661,
+   "iou": {
+    "Urban land": 0.5052,
+    "Agriculture land": 0.6212,
+    "Rangeland": 0.4337,
+    "Forest land": 0.7428,
+    "Water": 0.1474,
+    "Barren land": 0.3465
+   },
+   "f1": {
+    "Urban land": 0.6713,
+    "Agriculture land": 0.7663,
+    "Rangeland": 0.605,
+    "Forest land": 0.8524,
+    "Water": 0.257,
+    "Barren land": 0.5146
+   },
+   "ref_share": {
+    "Urban land": 7.38,
+    "Agriculture land": 17.89,
+    "Rangeland": 28.33,
+    "Forest land": 41.2,
+    "Water": 0.57,
+    "Barren land": 4.62
+   },
+   "pred_share": {
+    "Urban land": 10.81,
+    "Agriculture land": 18.57,
+    "Rangeland": 19.81,
+    "Forest land": 44.72,
+    "Water": 0.4,
+    "Barren land": 5.69,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Landsat 8, Oct-Dec 2021",
+   "reference": "ESA WorldCover 2021",
+   "n": 4766720,
+   "overall": 0.7266,
+   "kappa": 0.5231,
+   "miou": 0.3172,
+   "iou": {
+    "Urban land": 0.1325,
+    "Agriculture land": 0.4184,
+    "Rangeland": 0.2882,
+    "Forest land": 0.7829,
+    "Water": 0.0094,
+    "Barren land": 0.2717
+   },
+   "f1": {
+    "Urban land": 0.2341,
+    "Agriculture land": 0.5899,
+    "Rangeland": 0.4474,
+    "Forest land": 0.8783,
+    "Water": 0.0187,
+    "Barren land": 0.4273
+   },
+   "ref_share": {
+    "Urban land": 2.21,
+    "Agriculture land": 19.3,
+    "Rangeland": 10.91,
+    "Forest land": 61.44,
+    "Water": 0.38,
+    "Barren land": 5.77
+   },
+   "pred_share": {
+    "Urban land": 5.21,
+    "Agriculture land": 15.73,
+    "Rangeland": 14.58,
+    "Forest land": 61.5,
+    "Water": 0.49,
+    "Barren land": 2.5,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Landsat 8, Oct-Dec 2021",
+   "reference": "Impact Observatory 2021",
+   "n": 4766720,
+   "overall": 0.6789,
+   "kappa": 0.4911,
+   "miou": 0.3304,
+   "iou": {
+    "Urban land": 0.157,
+    "Agriculture land": 0.4266,
+    "Rangeland": 0.2884,
+    "Forest land": 0.7196,
+    "Water": 0.0077,
+    "Barren land": 0.383
+   },
+   "f1": {
+    "Urban land": 0.2714,
+    "Agriculture land": 0.5981,
+    "Rangeland": 0.4477,
+    "Forest land": 0.837,
+    "Water": 0.0153,
+    "Barren land": 0.5539
+   },
+   "ref_share": {
+    "Urban land": 7.7,
+    "Agriculture land": 17.28,
+    "Rangeland": 20.5,
+    "Forest land": 49.9,
+    "Water": 0.66,
+    "Barren land": 3.97
+   },
+   "pred_share": {
+    "Urban land": 5.21,
+    "Agriculture land": 15.73,
+    "Rangeland": 14.58,
+    "Forest land": 61.5,
+    "Water": 0.49,
+    "Barren land": 2.5,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Sentinel-2 L2A, Oct-Dec 2021",
+   "reference": "ESA WorldCover 2021",
+   "n": 6623232,
+   "overall": 0.6604,
+   "kappa": 0.5093,
+   "miou": 0.3271,
+   "iou": {
+    "Urban land": 0.1402,
+    "Agriculture land": 0.2517,
+    "Rangeland": 0.3253,
+    "Forest land": 0.795,
+    "Water": 0.0587,
+    "Barren land": 0.3916
+   },
+   "f1": {
+    "Urban land": 0.2459,
+    "Agriculture land": 0.4022,
+    "Rangeland": 0.491,
+    "Forest land": 0.8858,
+    "Water": 0.1109,
+    "Barren land": 0.5628
+   },
+   "ref_share": {
+    "Urban land": 2.31,
+    "Agriculture land": 19.57,
+    "Rangeland": 17.26,
+    "Forest land": 52.02,
+    "Water": 0.32,
+    "Barren land": 8.53
+   },
+   "pred_share": {
+    "Urban land": 13.42,
+    "Agriculture land": 7.49,
+    "Rangeland": 20.24,
+    "Forest land": 47.28,
+    "Water": 0.87,
+    "Barren land": 10.7,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Sentinel-2 L2A, Oct-Dec 2021",
+   "reference": "Impact Observatory 2021",
+   "n": 6623232,
+   "overall": 0.6706,
+   "kappa": 0.5422,
+   "miou": 0.3706,
+   "iou": {
+    "Urban land": 0.3636,
+    "Agriculture land": 0.3113,
+    "Rangeland": 0.3423,
+    "Forest land": 0.7879,
+    "Water": 0.0623,
+    "Barren land": 0.3565
+   },
+   "f1": {
+    "Urban land": 0.5333,
+    "Agriculture land": 0.4748,
+    "Rangeland": 0.51,
+    "Forest land": 0.8814,
+    "Water": 0.1173,
+    "Barren land": 0.5256
+   },
+   "ref_share": {
+    "Urban land": 7.38,
+    "Agriculture land": 17.89,
+    "Rangeland": 28.33,
+    "Forest land": 41.2,
+    "Water": 0.57,
+    "Barren land": 4.62
+   },
+   "pred_share": {
+    "Urban land": 13.42,
+    "Agriculture land": 7.49,
+    "Rangeland": 20.24,
+    "Forest land": 47.28,
+    "Water": 0.87,
+    "Barren land": 10.7,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Sentinel-2 cloudless 2021",
+   "reference": "ESA WorldCover 2021",
+   "n": 6623232,
+   "overall": 0.6812,
+   "kappa": 0.5312,
+   "miou": 0.3681,
+   "iou": {
+    "Urban land": 0.1938,
+    "Agriculture land": 0.4339,
+    "Rangeland": 0.4319,
+    "Forest land": 0.655,
+    "Water": 0.0233,
+    "Barren land": 0.4704
+   },
+   "f1": {
+    "Urban land": 0.3246,
+    "Agriculture land": 0.6052,
+    "Rangeland": 0.6033,
+    "Forest land": 0.7915,
+    "Water": 0.0455,
+    "Barren land": 0.6399
+   },
+   "ref_share": {
+    "Urban land": 2.31,
+    "Agriculture land": 19.57,
+    "Rangeland": 17.26,
+    "Forest land": 52.02,
+    "Water": 0.32,
+    "Barren land": 8.53
+   },
+   "pred_share": {
+    "Urban land": 8.19,
+    "Agriculture land": 17.73,
+    "Rangeland": 20.56,
+    "Forest land": 46.66,
+    "Water": 0.89,
+    "Barren land": 5.97,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Nepal-adapted",
+   "model_key": "nepal",
+   "source": "Sentinel-2 cloudless 2021",
+   "reference": "Impact Observatory 2021",
+   "n": 6623232,
+   "overall": 0.701,
+   "kappa": 0.5782,
+   "miou": 0.4247,
+   "iou": {
+    "Urban land": 0.343,
+    "Agriculture land": 0.4625,
+    "Rangeland": 0.4853,
+    "Forest land": 0.6625,
+    "Water": 0.0288,
+    "Barren land": 0.5659
+   },
+   "f1": {
+    "Urban land": 0.5108,
+    "Agriculture land": 0.6325,
+    "Rangeland": 0.6535,
+    "Forest land": 0.797,
+    "Water": 0.0561,
+    "Barren land": 0.7228
+   },
+   "ref_share": {
+    "Urban land": 7.38,
+    "Agriculture land": 17.89,
+    "Rangeland": 28.33,
+    "Forest land": 41.2,
+    "Water": 0.57,
+    "Barren land": 4.62
+   },
+   "pred_share": {
+    "Urban land": 8.19,
+    "Agriculture land": 17.73,
+    "Rangeland": 20.56,
+    "Forest land": 46.66,
+    "Water": 0.89,
+    "Barren land": 5.97,
+    "Unknown": 0.0
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Esri World Imagery (latest)",
+   "reference": "ESA WorldCover 2021",
+   "n": 6623232,
+   "overall": 0.3739,
+   "kappa": 0.2226,
+   "miou": 0.2049,
+   "iou": {
+    "Urban land": 0.2468,
+    "Agriculture land": 0.5118,
+    "Rangeland": 0.0329,
+    "Forest land": 0.312,
+    "Water": 0.0173,
+    "Barren land": 0.1083
+   },
+   "f1": {
+    "Urban land": 0.3959,
+    "Agriculture land": 0.6771,
+    "Rangeland": 0.0636,
+    "Forest land": 0.4756,
+    "Water": 0.034,
+    "Barren land": 0.1954
+   },
+   "ref_share": {
+    "Urban land": 2.31,
+    "Agriculture land": 19.57,
+    "Rangeland": 17.26,
+    "Forest land": 52.02,
+    "Water": 0.32,
+    "Barren land": 8.53
+   },
+   "pred_share": {
+    "Urban land": 6.57,
+    "Agriculture land": 24.4,
+    "Rangeland": 20.25,
+    "Forest land": 17.98,
+    "Water": 10.23,
+    "Barren land": 19.41,
+    "Unknown": 1.17
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Esri World Imagery (latest)",
+   "reference": "Impact Observatory 2021",
+   "n": 6623232,
+   "overall": 0.3912,
+   "kappa": 0.2489,
+   "miou": 0.2295,
+   "iou": {
+    "Urban land": 0.3065,
+    "Agriculture land": 0.557,
+    "Rangeland": 0.0803,
+    "Forest land": 0.3659,
+    "Water": 0.0233,
+    "Barren land": 0.0438
+   },
+   "f1": {
+    "Urban land": 0.4692,
+    "Agriculture land": 0.7155,
+    "Rangeland": 0.1487,
+    "Forest land": 0.5357,
+    "Water": 0.0456,
+    "Barren land": 0.0839
+   },
+   "ref_share": {
+    "Urban land": 7.38,
+    "Agriculture land": 17.89,
+    "Rangeland": 28.33,
+    "Forest land": 41.2,
+    "Water": 0.57,
+    "Barren land": 4.62
+   },
+   "pred_share": {
+    "Urban land": 6.57,
+    "Agriculture land": 24.4,
+    "Rangeland": 20.25,
+    "Forest land": 17.98,
+    "Water": 10.23,
+    "Barren land": 19.41,
+    "Unknown": 1.17
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Landsat 8, Oct-Dec 2021",
+   "reference": "ESA WorldCover 2021",
+   "n": 4766720,
+   "overall": 0.0081,
+   "kappa": -0.0013,
+   "miou": 0.0075,
+   "iou": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0145,
+    "Rangeland": 0.0,
+    "Forest land": 0.0,
+    "Water": 0.0035,
+    "Barren land": 0.0267
+   },
+   "f1": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0287,
+    "Rangeland": 0.0,
+    "Forest land": 0.0,
+    "Water": 0.007,
+    "Barren land": 0.052
+   },
+   "ref_share": {
+    "Urban land": 2.21,
+    "Agriculture land": 19.3,
+    "Rangeland": 10.91,
+    "Forest land": 61.44,
+    "Water": 0.38,
+    "Barren land": 5.77
+   },
+   "pred_share": {
+    "Urban land": 0.03,
+    "Agriculture land": 2.87,
+    "Rangeland": 0.0,
+    "Forest land": 0.0,
+    "Water": 95.33,
+    "Barren land": 0.4,
+    "Unknown": 1.38
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Landsat 8, Oct-Dec 2021",
+   "reference": "Impact Observatory 2021",
+   "n": 4766720,
+   "overall": 0.01,
+   "kappa": -0.0014,
+   "miou": 0.0095,
+   "iou": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0128,
+    "Rangeland": 0.0,
+    "Forest land": 0.0,
+    "Water": 0.0062,
+    "Barren land": 0.0382
+   },
+   "f1": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0253,
+    "Rangeland": 0.0,
+    "Forest land": 0.0,
+    "Water": 0.0122,
+    "Barren land": 0.0736
+   },
+   "ref_share": {
+    "Urban land": 7.7,
+    "Agriculture land": 17.28,
+    "Rangeland": 20.5,
+    "Forest land": 49.9,
+    "Water": 0.66,
+    "Barren land": 3.97
+   },
+   "pred_share": {
+    "Urban land": 0.03,
+    "Agriculture land": 2.87,
+    "Rangeland": 0.0,
+    "Forest land": 0.0,
+    "Water": 95.33,
+    "Barren land": 0.4,
+    "Unknown": 1.38
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Sentinel-2 L2A, Oct-Dec 2021",
+   "reference": "ESA WorldCover 2021",
+   "n": 6623232,
+   "overall": 0.1771,
+   "kappa": 0.0891,
+   "miou": 0.108,
+   "iou": {
+    "Urban land": 0.0112,
+    "Agriculture land": 0.3008,
+    "Rangeland": 0.0836,
+    "Forest land": 0.0,
+    "Water": 0.0057,
+    "Barren land": 0.2469
+   },
+   "f1": {
+    "Urban land": 0.0221,
+    "Agriculture land": 0.4625,
+    "Rangeland": 0.1543,
+    "Forest land": 0.0,
+    "Water": 0.0113,
+    "Barren land": 0.396
+   },
+   "ref_share": {
+    "Urban land": 2.31,
+    "Agriculture land": 19.57,
+    "Rangeland": 17.26,
+    "Forest land": 52.02,
+    "Water": 0.32,
+    "Barren land": 8.53
+   },
+   "pred_share": {
+    "Urban land": 0.83,
+    "Agriculture land": 33.65,
+    "Rangeland": 14.47,
+    "Forest land": 0.0,
+    "Water": 40.34,
+    "Barren land": 5.07,
+    "Unknown": 5.64
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Sentinel-2 L2A, Oct-Dec 2021",
+   "reference": "Impact Observatory 2021",
+   "n": 6623232,
+   "overall": 0.1853,
+   "kappa": 0.0882,
+   "miou": 0.1022,
+   "iou": {
+    "Urban land": 0.0066,
+    "Agriculture land": 0.311,
+    "Rangeland": 0.119,
+    "Forest land": 0.0,
+    "Water": 0.0071,
+    "Barren land": 0.1697
+   },
+   "f1": {
+    "Urban land": 0.0131,
+    "Agriculture land": 0.4744,
+    "Rangeland": 0.2127,
+    "Forest land": 0.0,
+    "Water": 0.0142,
+    "Barren land": 0.2902
+   },
+   "ref_share": {
+    "Urban land": 7.38,
+    "Agriculture land": 17.89,
+    "Rangeland": 28.33,
+    "Forest land": 41.2,
+    "Water": 0.57,
+    "Barren land": 4.62
+   },
+   "pred_share": {
+    "Urban land": 0.83,
+    "Agriculture land": 33.65,
+    "Rangeland": 14.47,
+    "Forest land": 0.0,
+    "Water": 40.34,
+    "Barren land": 5.07,
+    "Unknown": 5.64
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Sentinel-2 cloudless 2021",
+   "reference": "ESA WorldCover 2021",
+   "n": 6623232,
+   "overall": 0.0199,
+   "kappa": 0.0014,
+   "miou": 0.0235,
+   "iou": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0239,
+    "Rangeland": 0.0001,
+    "Forest land": 0.0,
+    "Water": 0.0032,
+    "Barren land": 0.1138
+   },
+   "f1": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0466,
+    "Rangeland": 0.0003,
+    "Forest land": 0.0,
+    "Water": 0.0064,
+    "Barren land": 0.2043
+   },
+   "ref_share": {
+    "Urban land": 2.31,
+    "Agriculture land": 19.57,
+    "Rangeland": 17.26,
+    "Forest land": 52.02,
+    "Water": 0.32,
+    "Barren land": 8.53
+   },
+   "pred_share": {
+    "Urban land": 0.02,
+    "Agriculture land": 7.14,
+    "Rangeland": 0.01,
+    "Forest land": 0.0,
+    "Water": 87.72,
+    "Barren land": 2.04,
+    "Unknown": 3.07
+   }
+  },
+  {
+   "model": "Original (paper)",
+   "model_key": "paper",
+   "source": "Sentinel-2 cloudless 2021",
+   "reference": "Impact Observatory 2021",
+   "n": 6623232,
+   "overall": 0.0112,
+   "kappa": -0.0078,
+   "miou": 0.0159,
+   "iou": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0023,
+    "Rangeland": 0.0001,
+    "Forest land": 0.0,
+    "Water": 0.006,
+    "Barren land": 0.087
+   },
+   "f1": {
+    "Urban land": 0.0,
+    "Agriculture land": 0.0047,
+    "Rangeland": 0.0002,
+    "Forest land": 0.0,
+    "Water": 0.0119,
+    "Barren land": 0.1601
+   },
+   "ref_share": {
+    "Urban land": 7.38,
+    "Agriculture land": 17.89,
+    "Rangeland": 28.33,
+    "Forest land": 41.2,
+    "Water": 0.57,
+    "Barren land": 4.62
+   },
+   "pred_share": {
+    "Urban land": 0.02,
+    "Agriculture land": 7.14,
+    "Rangeland": 0.01,
+    "Forest land": 0.0,
+    "Water": 87.72,
+    "Barren land": 2.04,
+    "Unknown": 3.07
+   }
+  }
+ ],
+ "inter_reference": {
+  "n": 6623232,
+  "overall": 0.7727,
+  "kappa": 0.6735,
+  "miou": 0.52,
+  "iou": {
+   "Urban land": 0.2875,
+   "Agriculture land": 0.6823,
+   "Rangeland": 0.5068,
+   "Forest land": 0.7579,
+   "Water": 0.4285,
+   "Barren land": 0.4569
+  },
+  "f1": {
+   "Urban land": 0.4466,
+   "Agriculture land": 0.8112,
+   "Rangeland": 0.6727,
+   "Forest land": 0.8623,
+   "Water": 0.5999,
+   "Barren land": 0.6273
+  },
+  "ref_share": {
+   "Urban land": 2.31,
+   "Agriculture land": 19.57,
+   "Rangeland": 17.26,
+   "Forest land": 52.02,
+   "Water": 0.32,
+   "Barren land": 8.53
+  },
+  "pred_share": {
+   "Urban land": 7.38,
+   "Agriculture land": 17.89,
+   "Rangeland": 28.33,
+   "Forest land": 41.2,
+   "Water": 0.57,
+   "Barren land": 4.62,
+   "Unknown": 0.0
+  }
+ }
+}

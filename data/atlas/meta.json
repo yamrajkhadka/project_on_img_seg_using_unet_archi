@@ -1,0 +1,49 @@
+{
+ "built": "2026-10-20T15:54:47+00:00",
+ "sites": 1038,
+ "design": {
+  "strata": "district",
+  "floor_per_district": 8,
+  "target_total": 1000,
+  "window_m": 1224.0
+ },
+ "epochs": [
+  "eox-2016",
+  "eox-2018",
+  "eox-2019",
+  "eox-2020",
+  "eox-2021",
+  "eox-2022",
+  "eox-2023",
+  "eox-2024",
+  "eox-2025",
+  "esri"
+ ],
+ "epoch_labels": {
+  "eox-2016": "2016 (Sentinel-2 cloudless)",
+  "eox-2018": "2018 (Sentinel-2 cloudless)",
+  "eox-2019": "2019 (Sentinel-2 cloudless)",
+  "eox-2020": "2020 (Sentinel-2 cloudless)",
+  "eox-2021": "2021 (Sentinel-2 cloudless)",
+  "eox-2022": "2022 (Sentinel-2 cloudless)",
+  "eox-2023": "2023 (Sentinel-2 cloudless)",
+  "eox-2024": "2024 (Sentinel-2 cloudless)",
+  "eox-2025": "2025 (Sentinel-2 cloudless)",
+  "esri": "Latest high-resolution (Esri World Imagery)"
+ },
+ "models": [
+  "nepal",
+  "paper"
+ ],
+ "reference_years": [
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025
+ ]
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="Monitor Nepal">
+  <path d="M4 40 L16 16 L22 26 L30 10 L44 40 Z" fill="#256abf"/>
+  <path d="M30 10 L34.5 19 L31.5 17.5 L29 21 L26.6 18.6 Z" fill="#ffffff"/>
+  <rect x="4" y="42" width="40" height="3" rx="1.5" fill="#dc143c"/>
+</svg>

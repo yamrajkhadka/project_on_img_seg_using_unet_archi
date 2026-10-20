@@ -1,10 +1,13 @@
-tensorflow==2.18.0
-keras==3.5.0
-numpy==1.26.4
-opencv-python-headless==4.9.0.80
-pandas==2.2.2
-streamlit==1.30.0
-altair==5.3.0
-protobuf==4.25.3
-scikit-image==0.21.0
-scipy==1.11.3
+# Monitor Nepal — app runtime (Streamlit Community Cloud, Python 3.11+).
+# The U-Net runs on ONNX Runtime; TensorFlow is no longer needed to serve the model.
+streamlit>=1.60,<2
+onnxruntime>=1.20
+numpy>=1.26
+pandas>=2.2
+scipy>=1.11
+pillow>=10.3
+requests>=2.31
+plotly>=5.22
+folium>=0.17
+streamlit-folium>=0.22
+shapely>=2.0

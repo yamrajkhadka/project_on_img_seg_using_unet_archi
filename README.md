@@ -1,5 +1,6 @@
 # Monitor Nepal — AI land-cover observatory
 
+**Website:** https://nepalmonitor.yamrajkhadka.com.np (Next.js, in `web/`)  
 **Live app:** https://4classifying-every-pixel-of-the-planets.streamlit.app/
 **Paper:** Khadka, Y. & Pradhan, R. (2026). *Land Cover Segmentation from Satellite Imagery Using U-Net with Custom
 Loss and Morphological Postprocessing.* Journal of Engineering Issues and Solutions 5(2): 240–253.
@@ -27,6 +28,16 @@ earthquakes, weather, air quality and two and a half centuries of history.
 | **Change detection** | The same place at two dates on an identical 5.5 m grid: drag-to-compare imagery and maps, where it changed (new built-up land, forest loss, water), how much (net change, Sankey of transitions), largest change patches. |
 | **Model lab** | The paper's demo (Sec. 3.6), reproduced exactly and upgraded: upload images or fetch samples from Nepal, paper-style 224 × 224 or native-scale inference, test-time augmentation, the published or the corrected post-processing, confidence maps, areas. |
 | **Methods, data & paper** | Citation and BibTeX, model card, the findings below, the statistics, every data source and its licence, limitations. |
+
+## The website (`web/`)
+
+[nepalmonitor.yamrajkhadka.com.np](https://nepalmonitor.yamrajkhadka.com.np) is a server-rendered Next.js site built
+for search engines and everyday use: live air quality and weather for all 77 districts, earthquakes, fires and rivers,
+and land-cover pages for Nepal, its 7 provinces, 77 districts and 775 local units (about 1,050 pages, all in the
+sitemap). `scripts/export_web.py` exports the data it needs to `web/data/` and `scripts/web_local_landcover.py` adds
+each local unit's land cover from the 10 m reference map; the monthly workflow runs both, so the site grows with
+every new year. Deployed on Vercel from this repository (root directory `web`). Run it locally with
+`cd web && npm install && npm run dev`.
 
 ## How it works
 

@@ -2,6 +2,7 @@
 #   1. scripts/extend_years.py adds every newly published year (Sentinel-2 cloudless annual mosaic, 10 m reference map);
 #   2. scripts/build_atlas.py classifies the atlas sites for every year that is not in the atlas yet;
 #   3. the "latest high-resolution imagery" epoch is re-classified on the newest Esri captures;
+#   4. the website's data (web/data, nepalmonitor.yamrajkhadka.com.np) is re-exported, local units included;
 # and the result is committed back, which redeploys the Streamlit app. So the timeline grows by itself, year by year.
 name: refresh-atlas
 
@@ -30,10 +31,14 @@ jobs:
         run: python scripts/build_atlas.py --workers 6
       - name: Re-classify the latest high-resolution imagery
         run: python scripts/build_atlas.py --epochs esri --refresh --workers 6
+      - name: Refresh the website's data
+        run: |
+          python scripts/web_local_landcover.py --workers 4
+          python scripts/export_web.py
       - name: Commit the refreshed atlas
         run: |
           git config user.name "monitor-nepal-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/atlas data/history
+          git add data/atlas data/history web/data
           git diff --cached --quiet || (git commit -m "Monthly refresh: new years and latest imagery" &&
             git pull --rebase origin main && git push)

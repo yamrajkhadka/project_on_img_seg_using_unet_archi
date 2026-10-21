@@ -1,0 +1,14 @@
+{
+ "description": "Years of the Impact Observatory 10 m annual land-cover map available over Nepal (extended by scripts/extend_years.py).",
+ "years": [
+  2017,
+  2018,
+  2019,
+  2020,
+  2021,
+  2022,
+  2023,
+  2024,
+  2025
+ ]
+}

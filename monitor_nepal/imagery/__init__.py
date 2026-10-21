@@ -75,7 +75,7 @@ def resolve(spec: ImagerySpec, bbox_lonlat: tuple[float, float, float, float]) -
             raise ValueError(f"Unknown Wayback release {spec.release}")
         return esri.wayback_source(rel)
     if spec.kind == "eox":
-        return eox.annual_source(int(spec.year or eox.YEARS[-1]))
+        return eox.annual_source(int(spec.year or eox.years()[-1]))
     if spec.kind in planetary.PRODUCTS:
         if spec.item:
             return planetary.item_source(spec.kind, spec.item, spec.start.isoformat() if spec.start else "")

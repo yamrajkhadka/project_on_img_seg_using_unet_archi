@@ -38,7 +38,7 @@ from monitor_nepal.imagery import eox, esri, reference  # noqa: E402
 from monitor_nepal.model import MODELS, get_model  # noqa: E402
 from monitor_nepal.postprocess import clean  # noqa: E402
 
-DEFAULT_EPOCHS = [f"eox-{y}" for y in eox.YEARS] + ["esri"]
+DEFAULT_EPOCHS = [f"eox-{y}" for y in eox.years()] + ["esri"]
 
 
 def epoch_label(epoch: str) -> str:
@@ -153,7 +153,7 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=1768)
     ap.add_argument("--epochs", default=",".join(DEFAULT_EPOCHS))
     ap.add_argument("--models", default=",".join(m.key for m in MODELS.values() if m.available))
-    ap.add_argument("--ref-years", default=",".join(str(y) for y in reference.YEARS))
+    ap.add_argument("--ref-years", default=",".join(str(y) for y in reference.years()))
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--refresh", action="store_true", help="recompute epochs that already exist")
     ap.add_argument("--capture-dates", action="store_true", help="record the Esri capture date at every site")

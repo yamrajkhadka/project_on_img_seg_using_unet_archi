@@ -1,16 +1,14 @@
-# Keeps the national land-cover atlas current: once a month the "latest high-resolution imagery" epoch is
-# re-classified at every atlas site and committed back, which redeploys the Streamlit app automatically.
-# Enable it under Settings -> Actions -> General -> Workflow permissions: "Read and write permissions".
+# Keeps the app current without anyone touching it. On the 1st of every month:
+#   1. scripts/extend_years.py adds every newly published year (Sentinel-2 cloudless annual mosaic, 10 m reference map);
+#   2. scripts/build_atlas.py classifies the atlas sites for every year that is not in the atlas yet;
+#   3. the "latest high-resolution imagery" epoch is re-classified on the newest Esri captures;
+# and the result is committed back, which redeploys the Streamlit app. So the timeline grows by itself, year by year.
 name: refresh-atlas
 
 on:
   schedule:
     - cron: "30 2 1 * *"  # 02:30 UTC on the 1st of every month
   workflow_dispatch:
-    inputs:
-      epochs:
-        description: "Epochs to (re)compute, e.g. esri or eox-2026"
-        default: "esri"
 
 permissions:
   contents: write
@@ -18,7 +16,7 @@ permissions:
 jobs:
   atlas:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
+    timeout-minutes: 300
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,11 +24,15 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Re-classify the atlas sites
-        run: python scripts/build_atlas.py --epochs "${{ github.event.inputs.epochs || 'esri' }}" --refresh --workers 6
+      - name: Add newly published years
+        run: python scripts/extend_years.py
+      - name: Classify every year not yet in the atlas
+        run: python scripts/build_atlas.py --workers 6
+      - name: Re-classify the latest high-resolution imagery
+        run: python scripts/build_atlas.py --epochs esri --refresh --workers 6
       - name: Commit the refreshed atlas
         run: |
           git config user.name "monitor-nepal-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/atlas
-          git diff --cached --quiet || (git commit -m "Refresh national land-cover atlas" && git push)
+          git add data/atlas data/history
+          git diff --cached --quiet || (git commit -m "Monthly refresh: new years and latest imagery" && git push)

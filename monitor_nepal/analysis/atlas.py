@@ -24,8 +24,15 @@ from ..config import ATLAS_DIR, CLASS_KEYS
 from . import stats
 
 
-@lru_cache(maxsize=1)
 def load() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict] | None:
+    """The atlas files, re-read whenever the monthly refresh replaces them."""
+    stamp = tuple((ATLAS_DIR / n).stat().st_mtime if (ATLAS_DIR / n).exists() else 0.0
+                  for n in ("sites.csv", "results.csv.gz", "reference.csv.gz", "meta.json"))
+    return _load(stamp)
+
+
+@lru_cache(maxsize=1)
+def _load(_stamp: tuple) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, dict] | None:
     try:
         sites = pd.read_csv(ATLAS_DIR / "sites.csv")
         results = pd.read_csv(ATLAS_DIR / "results.csv.gz")

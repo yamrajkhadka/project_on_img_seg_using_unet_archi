@@ -1,4 +1,4 @@
-"""Independent reference map: Impact Observatory / Esri 10 m annual land cover (2017-2025).
+"""Independent reference map: Impact Observatory / Esri 10 m annual land cover (2017 onwards).
 
 Used to *validate* the U-Net (agreement, confusion matrix) - never to replace it.  Its nine classes
 map cleanly onto the seven DeepGlobe classes the paper's network predicts.
@@ -6,16 +6,19 @@ map cleanly onto the seven DeepGlobe classes the paper's network predicts.
 from __future__ import annotations
 
 import io
+import json
 from datetime import datetime, timezone
 
 import numpy as np
 from PIL import Image
 
+from ..config import HISTORY_DIR
 from ..geo import Grid
 from ..http import FetchError, get
 
 SERVICE = "https://ic.imagery1.arcgis.com/arcgis/rest/services/Sentinel2_10m_LandCover/ImageServer"
-YEARS = tuple(range(2017, 2026))
+BASE_YEARS = tuple(range(2017, 2026))
+YEARS_FILE = HISTORY_DIR / "reference_years.json"  # extended by scripts/extend_years.py as new years are published
 ATTRIBUTION = "Land cover © Esri / Impact Observatory / Microsoft (CC BY 4.0)"
 
 IO_CLASSES = {1: "Water", 2: "Trees", 4: "Flooded vegetation", 5: "Crops", 7: "Built area", 8: "Bare ground",
@@ -70,10 +73,18 @@ def fetch_worldcover(grid: Grid, year: int = 2021) -> np.ndarray:
     return out
 
 
-def fetch_io(grid: Grid, year: int, *, max_side: int = 4000) -> tuple[np.ndarray, np.ndarray]:
+def years() -> tuple[int, ...]:
+    try:
+        return tuple(json.loads(YEARS_FILE.read_text())["years"])
+    except (FileNotFoundError, KeyError, ValueError):
+        return BASE_YEARS
+
+
+def fetch_io(grid: Grid, year: int, *, max_side: int = 4000, check: bool = True) -> tuple[np.ndarray, np.ndarray]:
     """IO classes on ``grid`` (uint8) and the same mapped to DeepGlobe ids (255 = no data)."""
-    if year not in YEARS:
-        raise FetchError(f"The 10 m reference map covers {YEARS[0]}-{YEARS[-1]}.")
+    ys = years()
+    if check and year not in ys:
+        raise FetchError(f"The 10 m reference map covers {ys[0]}-{ys[-1]}.")
     if max(grid.width, grid.height) > max_side:
         raise FetchError("Reference request too large.")
     t0 = int(datetime(year, 1, 1, tzinfo=timezone.utc).timestamp() * 1000)
@@ -85,7 +96,10 @@ def fetch_io(grid: Grid, year: int, *, max_side: int = 4000) -> tuple[np.ndarray
         timeout=90)
     if "image" not in r.headers.get("content-type", ""):
         raise FetchError("The reference land-cover service returned an error.")
-    io_cls = np.asarray(Image.open(io.BytesIO(r.content)))
+    try:
+        io_cls = np.asarray(Image.open(io.BytesIO(r.content)))
+    except OSError as exc:  # truncated or unreadable image
+        raise FetchError("The reference land-cover service returned an unreadable image.") from exc
     if io_cls.shape != (grid.height, grid.width):
         io_cls = np.asarray(Image.fromarray(io_cls).resize((grid.width, grid.height), Image.Resampling.NEAREST))
     return io_cls, LUT[io_cls]

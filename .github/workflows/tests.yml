@@ -1,8 +1,13 @@
+# On every push: the offline tests. Once a month: also the live-service tests, so a data source that changed or
+# disappeared shows up as a failed run (GitHub emails the repository owner).
 name: tests
 
 on:
   push:
   pull_request:
+  schedule:
+    - cron: "0 3 2 * *"  # 03:00 UTC on the 2nd of every month, after the atlas refresh
+  workflow_dispatch:
 
 jobs:
   test:
@@ -15,3 +20,8 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt pytest
       - run: pytest -q
+      - name: Live data services
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          MONITOR_NEPAL_NETWORK_TESTS: "1"
+        run: pytest -q tests/test_network.py

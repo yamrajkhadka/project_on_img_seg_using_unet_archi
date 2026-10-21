@@ -106,8 +106,13 @@ Pushing this code to that branch updates the app in place: same URL, same Python
 is kept verbatim in `legacy/`, and the notebooks and `deepglobe_unet_jay.keras` stay where the paper says they are.
 TensorFlow is no longer needed at runtime, so the app installs and starts much faster.
 
-To keep the national atlas current, enable *Read and write* workflow permissions; `.github/workflows/refresh-atlas.yml`
-then re-classifies the atlas sites on the latest imagery every month and commits the result.
+**It keeps itself up to date.** The live panels (fires, earthquakes, weather, air quality, rivers, satellite passes)
+are fetched fresh on every visit. Once a month, `.github/workflows/refresh-atlas.yml` adds every newly published year
+(the next Sentinel-2 cloudless annual mosaic and the next 10 m reference map, found by `scripts/extend_years.py`),
+classifies the atlas sites for it, re-classifies the latest high-resolution imagery and commits the result, which
+redeploys the app, so the year-by-year timeline grows by itself. A day after, `.github/workflows/tests.yml` also
+checks every live data source and GitHub emails the owner if one has changed. `requirements.txt` pins the exact
+library versions that are known to work, so a restart years from now installs the same environment.
 
 ## Reproduce the research
 
@@ -118,6 +123,7 @@ then re-classifies the atlas sites on the latest imagery every month and commits
 | `scripts/finetune_nepal.py` | Fine-tune on it (PyTorch twin of the Keras network; CUDA, Apple MPS or CPU). |
 | `scripts/evaluate_models.py` | Score both models on held-out districts against two independent reference maps. |
 | `scripts/build_atlas.py` | Build or extend the national atlas (fixed stratified panel of sites, every epoch). |
+| `scripts/extend_years.py` | Add newly published years (Sentinel-2 cloudless mosaic, reference map); run monthly. |
 | `scripts/build_history.py` | Refresh the bundled long-run national series. |
 | `scripts/build_rivers.py` | Rebuild the 2004–2023 river climatology and flood levels. |
 | `scripts/prepare_boundaries.py` | Simplify the official administrative boundaries. |

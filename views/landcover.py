@@ -289,7 +289,7 @@ if result[0] == "map":
                 "the reference is itself a model (~75–85% accurate) — but large gaps are informative."
             )
             year = st.select_slider(
-                "Reference year", list(reference.YEARS), value=reference.YEARS[-1], key="lc_ref_year"
+                "Reference year", list(reference.years()), value=reference.years()[-1], key="lc_ref_year"
             )
             if st.button("Compare", key="lc_ref_go", icon=":material/fact_check:"):
                 try:

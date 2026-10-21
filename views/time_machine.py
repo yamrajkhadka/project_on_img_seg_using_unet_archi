@@ -507,7 +507,7 @@ def year_view() -> None:
                     "lines show Impact Observatory's independent 10 m map at the same sites."
                 )
             else:
-                years = [y for y in eox.YEARS if y0 <= y <= y1]
+                years = [y for y in eox.years() if y0 <= y <= y1]
                 common.model_source_warning(settings["model"], "eox")
                 st.write(
                     f"Run the U-Net on the Sentinel-2 cloudless mosaic of every year {years[0] if years else ''}"

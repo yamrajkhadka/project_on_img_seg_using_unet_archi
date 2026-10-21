@@ -1,13 +1,15 @@
-# Monitor Nepal — app runtime (Streamlit Community Cloud, Python 3.11+).
+# Monitor Nepal — app runtime (Streamlit Community Cloud, Python 3.11).
 # The U-Net runs on ONNX Runtime; TensorFlow is no longer needed to serve the model (models/unet_nepal.onnx).
-streamlit>=1.60,<2
-onnxruntime>=1.20
-numpy>=1.26
-pandas>=2.2
-scipy>=1.11
-pillow>=10.3
-requests>=2.31
-plotly>=5.22
-folium>=0.17
-streamlit-folium>=0.22
-shapely>=2.0
+# Exact versions known to work together, so a restart years from now installs the same environment.
+# To upgrade: raise the versions, run pytest (and MONITOR_NEPAL_NETWORK_TESTS=1 pytest tests/test_network.py).
+streamlit==1.66.0
+onnxruntime==1.31.0
+numpy==2.4.6
+pandas==3.0.6
+scipy==1.17.1
+pillow==12.3.0
+requests==2.34.2
+plotly==7.1.0
+folium==0.20.0
+streamlit-folium==0.27.4
+shapely==2.2.0

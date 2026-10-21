@@ -80,7 +80,7 @@ def imagery_picker(key: str, *, kinds: tuple[str, ...] = tuple(KINDS), default: 
                                                        "the capture date is shown after the analysis.")
         return ImagerySpec("wayback", release=num)
     if kind == "eox":
-        year = st.select_slider("Year", options=list(eox.YEARS), value=eox.YEARS[-1], key=f"{key}_year")
+        year = st.select_slider("Year", options=list(eox.years()), value=eox.years()[-1], key=f"{key}_year")
         return ImagerySpec("eox", year=year)
     first = {"s2": date(2015, 7, 1), "landsat": date(1982, 9, 1), "mss": date(1972, 8, 1)}[kind]
     last = date.today() if kind != "mss" else date(1992, 12, 31)

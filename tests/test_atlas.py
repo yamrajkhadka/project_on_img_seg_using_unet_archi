@@ -34,9 +34,9 @@ def fake_atlas(tmp_path, monkeypatch):
     meta = {"epochs": ["eox-2016", "eox-2025"], "epoch_labels": {"eox-2016": "2016", "eox-2025": "2025"}}
     (tmp_path / "meta.json").write_text(json.dumps(meta))
     monkeypatch.setattr(atlas, "ATLAS_DIR", tmp_path)
-    atlas.load.cache_clear()
+    atlas._load.cache_clear()
     yield sites
-    atlas.load.cache_clear()
+    atlas._load.cache_clear()
 
 
 def test_estimates_trend_change(fake_atlas):

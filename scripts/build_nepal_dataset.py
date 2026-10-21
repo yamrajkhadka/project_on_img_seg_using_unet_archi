@@ -136,7 +136,7 @@ def build_site(site: dict, out_dir: Path) -> str:
     ]
     imgs, labs, srcs, yrs = [], [], [], []
     for name, lyear, fn in jobs:
-        if name == "eox" and y not in imagery.eox.YEARS:  # the 2017 mosaic is blank over Nepal
+        if name == "eox" and y not in imagery.eox.years():  # the 2017 mosaic is blank over Nepal
             continue
         if name == "landsat" and y < 2018 and site["season"] == "dry":
             continue  # Landsat 8 coverage is fine, but keep the set balanced towards recent years

@@ -1,6 +1,8 @@
 """EOX Sentinel-2 cloudless: one cloud-free, colour-balanced mosaic of the planet per year.
 
-Over Nepal the 2017 layer is blank (pure white at every zoom), so it is left out.  The mosaics of different years
+Over Nepal the 2017 layer is blank (pure white at every zoom), so it is left out.  The list of years is read from
+``data/history/eox_radiometry.json``: ``scripts/extend_years.py`` (run monthly by GitHub Actions) adds each new annual
+mosaic as soon as EOX publishes it, so the timeline grows by itself.  The mosaics of different years
 were processed differently, so before classification each year's colours are mapped onto a common reference
 (``normalize``): a per-channel gain and offset that matches the year's national mean and spread, measured at
 random sites across Nepal, to the 2018-2025 average.  This removes year-wide processing differences that the
@@ -10,13 +12,15 @@ from __future__ import annotations
 
 import json
 from functools import lru_cache
+from pathlib import Path
 
 import numpy as np
 
 from ..config import HISTORY_DIR
 from .base import XYZSource
 
-YEARS = (2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025)
+RADIOMETRY = HISTORY_DIR / "eox_radiometry.json"
+BASE_YEARS = (2016, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025)
 ATTRIBUTION = ("Sentinel-2 cloudless by EOX IT Services GmbH (contains modified Copernicus Sentinel data); "
                "2016: CC BY 4.0, 2017+: CC BY-NC-SA 4.0")
 
@@ -25,21 +29,30 @@ def layer_name(year: int) -> str:
     return "s2cloudless_3857" if year == 2016 else f"s2cloudless-{year}_3857"
 
 
-def annual_source(year: int) -> XYZSource:
-    if year not in YEARS:
-        raise ValueError(f"Sentinel-2 cloudless over Nepal exists for {', '.join(map(str, YEARS))}, not {year}.")
+def years() -> tuple[int, ...]:
+    """Annual mosaics usable over Nepal: every year with measured colour statistics."""
+    return tuple(sorted(int(y) for y in _radiometry().get("years", {}))) or BASE_YEARS
+
+
+def annual_source(year: int, *, check: bool = True) -> XYZSource:
+    if check and year not in years():
+        raise ValueError(f"Sentinel-2 cloudless over Nepal exists for {', '.join(map(str, years()))}, not {year}.")
     url = f"https://tiles.maps.eox.at/wmts/1.0.0/{layer_name(year)}/default/g/{{z}}/{{y}}/{{x}}.jpg"
     return XYZSource(key=f"eox-{year}", name="Sentinel-2 cloudless (EOX)", url_template=url,
                      attribution=ATTRIBUTION, max_zoom=15, native_gsd=10, acquired=str(year),
                      label=f"Sentinel-2 cloudless · {year} annual mosaic", meta={"year": year})
 
 
-@lru_cache(maxsize=1)
 def _radiometry() -> dict:
     try:
-        return json.loads((HISTORY_DIR / "eox_radiometry.json").read_text())
+        return _read(RADIOMETRY, RADIOMETRY.stat().st_mtime)
     except FileNotFoundError:
         return {}
+
+
+@lru_cache(maxsize=4)
+def _read(path: Path, _mtime: float) -> dict:  # re-read whenever the file changes
+    return json.loads(path.read_text())
 
 
 def normalize(rgb: np.ndarray, year: int) -> np.ndarray:

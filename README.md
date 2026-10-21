@@ -113,8 +113,8 @@ adds each finished year's river peaks, national climate (ERA5 calibrated to the 
 events (M6+ earthquakes, floods above the 10-year level), classifies the atlas sites for every new year,
 re-classifies the latest high-resolution imagery and commits the result, which redeploys the app. No year is
 fixed in the code: every timeline, from a single day to the decades view, runs to the present and keeps growing. A day after, `.github/workflows/tests.yml` also
-checks every live data source and GitHub emails the owner if one has changed. `requirements.txt` pins the exact
-library versions that are known to work, so a restart years from now installs the same environment.
+checks every live data source and GitHub emails the owner if one has changed. `requirements.txt` caps every library below its
+next major version, so a restart years from now cannot pull in a breaking release.
 
 ## Reproduce the research
 

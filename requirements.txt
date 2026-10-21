@@ -1,5 +1,5 @@
 # Monitor Nepal — app runtime (Streamlit Community Cloud, Python 3.11+).
-# The U-Net runs on ONNX Runtime; TensorFlow is no longer needed to serve the model.
+# The U-Net runs on ONNX Runtime; TensorFlow is no longer needed to serve the model (models/unet_nepal.onnx).
 streamlit>=1.60,<2
 onnxruntime>=1.20
 numpy>=1.26

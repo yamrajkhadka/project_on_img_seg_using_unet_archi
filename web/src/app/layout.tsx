@@ -10,7 +10,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "sw
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: { default: `${siteConfig.name} — ${siteConfig.tagline}`, template: `%s | ${siteConfig.name}` },
+  title: { default: `${siteConfig.name}: Live Air Quality, Weather, Earthquakes & Land Cover`, template: `%s | ${siteConfig.name}` },
   description: siteConfig.description,
   applicationName: siteConfig.name,
   authors: [{ name: siteConfig.author, url: siteConfig.authorUrl }],

@@ -144,6 +144,8 @@ def sidebar_settings() -> dict:
         st.divider()
         st.caption(f"Model from **{PAPER.short_authors} ({PAPER.year})**, *{PAPER.journal}* "
                    f"{PAPER.volume}({PAPER.issue}). [Paper]({PAPER.url}) · [Code]({PAPER.code_url})")
+        st.caption("Air quality, weather and land cover for every district and municipality: "
+                   "[nepalmonitor.yamrajkhadka.com.np](https://nepalmonitor.yamrajkhadka.com.np)")
     return s
 
 

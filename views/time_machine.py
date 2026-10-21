@@ -703,14 +703,20 @@ def national_indicators(y0: int, y1: int) -> None:
 
 
 # =====================================================================================================================
-DECADE_WINDOWS = {
-    "1970s": ("mss", date(1976, 10, 1), date(1977, 3, 31)),
-    "1980s": ("landsat", date(1988, 10, 1), date(1989, 3, 31)),
-    "1990s": ("landsat", date(1998, 10, 1), date(1999, 3, 31)),
-    "2000s": ("landsat", date(2008, 10, 1), date(2009, 3, 31)),
-    "2010s": ("landsat", date(2018, 10, 1), date(2019, 3, 31)),
-    "2020s": ("landsat", date(2023, 10, 1), date(2024, 3, 31)),
-}
+def decade_windows(today: date | None = None) -> dict[str, tuple[str, date, date]]:
+    """One dry season (October-March) late in every decade from the 1970s to the current one.
+
+    A decade appears as soon as its first full dry season has ended, so the list keeps growing: the 2030s join in
+    April 2031, the 2040s in April 2041, and so on.
+    """
+    today = today or date.today()
+    last = today.year - 1 if today >= date(today.year, 4, 1) else today.year - 2  # latest finished Oct-Mar season
+    out = {"1970s": ("mss", date(1976, 10, 1), date(1977, 3, 31))}
+    for start in range(1980, today.year + 1, 10):
+        y = min(start + 8, last)
+        if y >= start:
+            out[f"{start}s"] = ("landsat", date(y, 10, 1), date(y + 1, 3, 31))
+    return out
 
 
 def decade_view() -> None:
@@ -725,13 +731,14 @@ def decade_view() -> None:
             )
             st.badge("Experimental", color="orange", icon=":material/science:")
             common.model_source_warning(settings["model"], "landsat")
-            decs = [d for d in DECADE_WINDOWS if d != "1970s"]
+            windows = decade_windows()
+            decs = [d for d in windows if d != "1970s"]
             if st.button("Run the decade analysis", key="tm_dec_run", icon=":material/play_arrow:"):
                 prog = st.progress(0.0)
                 try:
                     epochs = tuple(
                         (dec, ImagerySpec(k, start=a, end=b, cloud_max=30))
-                        for dec, (k, a, b) in DECADE_WINDOWS.items()
+                        for dec, (k, a, b) in windows.items()
                         if dec in decs
                     )
                     out = data.survey_series(
@@ -760,7 +767,7 @@ def decade_view() -> None:
                 if st.button("Show 1970s image of the region centre", key="tm_mss"):
                     try:
                         g = Grid.around(lon, lat, min(20000, max(5000, w_km * 500)), 30.0)
-                        k_, a_, b_ = DECADE_WINDOWS["1970s"]
+                        k_, a_, b_ = windows["1970s"]
                         sc = planetary.mosaic_source("mss", g.bounds_lonlat, a_, b_, 40).fetch(g)
                         st.image(
                             sc.rgb,
@@ -955,7 +962,7 @@ def century_view() -> None:
         "**Years** view; for the Landsat decades, the **Decades** view."
     )
     provenance(
-        "climate: CRU TS 4.08 (national); population and cropland: HYDE 3.3 via Our World in Data; "
+        "climate: CRU TS 4.08 (national; later years ERA5 calibrated to it); population and cropland: HYDE 3.3 via Our World in Data; "
         "earthquakes: USGS/ISC-GEM. Long-run series are national even when a smaller region is selected."
     )
 

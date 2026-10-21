@@ -2,7 +2,9 @@
 
 * World Bank WDI (1960-)         population, urbanisation, forest and farm land, ...
 * HYDE 3.3 via Our World in Data  population, cropland, grazing land and built-up area back to 10,000 BCE
-* World Bank CCKP climate         CRU TS 4.08 (1901-2023) and ERA5 (1950-2023) national averages
+* World Bank CCKP climate         CRU TS 4.08 (1901-2023) and ERA5 (1950-2023) national averages, continued
+                                  year by year with ERA5 from Open-Meteo calibrated to them (climate_recent.csv,
+                                  written monthly by scripts/extend_years.py)
 
 Every fetch falls back to a snapshot in ``data/history`` (refreshed by ``scripts/build_history.py``), so
 the long-term pages keep working if an API is down.
@@ -98,13 +100,19 @@ def owid(key: str) -> pd.DataFrame:
         return _snapshot(f"owid_{key}")
 
 
-def climate(key: str) -> pd.DataFrame:
-    """National annual series: columns year, value."""
+def climate(key: str, *, extended: bool = True) -> pd.DataFrame:
+    """National annual series: columns year, value (the CCKP record, then the calibrated recent years)."""
     dataset = CLIMATE[key][0]
     try:
         data = get_json(CCKP.format(dataset=dataset), params={"_format": "json"}, timeout=60)
         series = data["data"]["NPL"]
         df = pd.DataFrame({"year": [int(k[:4]) for k in series], "value": list(series.values())})
-        return df.sort_values("year").reset_index(drop=True)
+        df = df.sort_values("year").reset_index(drop=True)
     except (FetchError, KeyError, TypeError, ValueError):
-        return _snapshot(f"climate_{key}")
+        df = _snapshot(f"climate_{key}")
+    recent = HISTORY_DIR / "climate_recent.csv"
+    if extended and recent.exists() and not df.empty:
+        r = pd.read_csv(recent)
+        r = r[(r.key == key) & (r.year > df.year.max())][["year", "value"]]
+        df = pd.concat([df, r], ignore_index=True)
+    return df

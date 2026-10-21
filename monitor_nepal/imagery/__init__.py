@@ -11,7 +11,7 @@ from .base import ProgressFn, Scene, XYZSource
 KINDS = {
     "esri": "Esri World Imagery · latest (≈0.5 m)",
     "wayback": "Esri Wayback · historical high-res (2014–)",
-    "eox": "Sentinel-2 cloudless · annual mosaic (2016–2025)",
+    "eox": "Sentinel-2 cloudless · annual mosaic (2016 onwards)",
     "s2": "Sentinel-2 L2A · any date (2015–, 10 m)",
     "landsat": "Landsat 4–9 · any date (1982–, 30 m)",
     "mss": "Landsat MSS · false colour (1972–1992, 60 m)",

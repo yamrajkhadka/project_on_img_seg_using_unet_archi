@@ -109,8 +109,10 @@ TensorFlow is no longer needed at runtime, so the app installs and starts much f
 **It keeps itself up to date.** The live panels (fires, earthquakes, weather, air quality, rivers, satellite passes)
 are fetched fresh on every visit. Once a month, `.github/workflows/refresh-atlas.yml` adds every newly published year
 (the next Sentinel-2 cloudless annual mosaic and the next 10 m reference map, found by `scripts/extend_years.py`),
-classifies the atlas sites for it, re-classifies the latest high-resolution imagery and commits the result, which
-redeploys the app, so the year-by-year timeline grows by itself. A day after, `.github/workflows/tests.yml` also
+adds each finished year's river peaks, national climate (ERA5 calibrated to the World Bank series) and timeline
+events (M6+ earthquakes, floods above the 10-year level), classifies the atlas sites for every new year,
+re-classifies the latest high-resolution imagery and commits the result, which redeploys the app. No year is
+fixed in the code: every timeline, from a single day to the decades view, runs to the present and keeps growing. A day after, `.github/workflows/tests.yml` also
 checks every live data source and GitHub emails the owner if one has changed. `requirements.txt` pins the exact
 library versions that are known to work, so a restart years from now installs the same environment.
 

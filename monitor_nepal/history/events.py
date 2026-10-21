@@ -5,7 +5,13 @@ cover), "disaster" and "conservation".  Kept deliberately brief and limited to w
 """
 from __future__ import annotations
 
+import csv
 from dataclasses import dataclass
+from functools import lru_cache
+
+from ..config import HISTORY_DIR
+
+AUTO_EVENTS = HISTORY_DIR / "events_auto.csv"  # written monthly by scripts/extend_years.py
 
 
 @dataclass(frozen=True)
@@ -63,5 +69,19 @@ CATEGORY_LABELS = {"state": "State & politics", "land": "Land policy", "disaster
                    "conservation": "Conservation & milestones"}
 
 
+def all_events() -> tuple[Event, ...]:
+    """The curated timeline, continued by events recorded automatically (strong earthquakes, major floods)."""
+    try:
+        return EVENTS + _auto(AUTO_EVENTS.stat().st_mtime)
+    except FileNotFoundError:
+        return EVENTS
+
+
+@lru_cache(maxsize=2)
+def _auto(_mtime: float) -> tuple[Event, ...]:
+    with AUTO_EVENTS.open() as f:
+        return tuple(Event(int(r["year"]), r["title"], r["category"], r["detail"]) for r in csv.DictReader(f))
+
+
 def between(start: int, end: int, categories: tuple[str, ...] | None = None) -> list[Event]:
-    return [e for e in EVENTS if start <= e.year <= end and (categories is None or e.category in categories)]
+    return [e for e in all_events() if start <= e.year <= end and (categories is None or e.category in categories)]

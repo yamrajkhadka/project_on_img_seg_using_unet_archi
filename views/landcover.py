@@ -284,7 +284,7 @@ if result[0] == "map":
     if t_ref.open:
         with t_ref:
             st.caption(
-                "Compare this map with Impact Observatory's independent 10 m annual land-cover map (2017–2025), "
+                "Compare this map with Impact Observatory's independent 10 m annual land-cover map (2017 onwards), "
                 "translated into the paper's seven classes. Disagreement is not automatically the U-Net's error — "
                 "the reference is itself a model (~75–85% accurate) — but large gaps are informative."
             )

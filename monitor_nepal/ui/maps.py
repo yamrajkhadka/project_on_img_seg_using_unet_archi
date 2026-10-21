@@ -13,14 +13,13 @@ from PIL import Image
 from .. import boundaries
 from ..config import PALETTES
 from ..geo import Grid
-from ..imagery import gibs
+from ..imagery import eox, gibs
 
 ESRI = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
 ESRI_LABELS = "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
 CARTO_LIGHT = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
 CARTO_DARK = "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
 TOPO = "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
-EOX = "https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2025_3857/default/g/{z}/{y}/{x}.jpg"
 NIGHT_LIGHTS = ("https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_Black_Marble/default/2016-01-01/"
                 "GoogleMapsCompatible_Level8/{z}/{y}/{x}.png")
 
@@ -33,9 +32,11 @@ def base_map(center: tuple[float, float] = (28.3, 84.1), zoom: int = 7, *, basem
     """center is (lat, lon)."""
     m = folium.Map(location=center, zoom_start=zoom, tiles=None, control_scale=True, prefer_canvas=True,
                    max_zoom=19, min_zoom=5)
+    eox_year = eox.years()[-1]  # the newest annual mosaic, whichever year that is
     layers = [
         ("Satellite (Esri World Imagery)", ESRI, "Imagery © Esri, Vantor/Maxar, Earthstar Geographics", 19),
-        ("Sentinel-2 cloudless 2025 (EOX)", EOX, "Sentinel-2 cloudless 2025 © EOX (CC BY-NC-SA 4.0)", 17),
+        (f"Sentinel-2 cloudless {eox_year} (EOX)", eox.annual_source(eox_year).url_template,
+         f"Sentinel-2 cloudless {eox_year} © EOX (CC BY-NC-SA 4.0)", 17),
         ("Streets (light)", CARTO_LIGHT, "© OpenStreetMap contributors © CARTO", 19),
         ("Streets (dark)", CARTO_DARK, "© OpenStreetMap contributors © CARTO", 19),
         ("Topographic", TOPO, "© OpenStreetMap contributors, SRTM · style © OpenTopoMap (CC-BY-SA)", 17),

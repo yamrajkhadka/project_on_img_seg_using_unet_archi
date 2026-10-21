@@ -189,7 +189,7 @@ def live_panel() -> None:
             maps.add_places(m, now)
         st_folium(maps.finish(m), height=540, use_container_width=True, returned_objects=[], key="live_map")
         st.caption(
-            "Layers (top right): today's NASA true-colour image, Sentinel-2 2025 mosaic, districts. "
+            "Layers (top right): today's NASA true-colour image, the latest Sentinel-2 annual mosaic, districts. "
             "Fire dots scale with radiative power; earthquake circles with magnitude."
         )
     with right:

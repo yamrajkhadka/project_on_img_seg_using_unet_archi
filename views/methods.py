@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from monitor_nepal.config import CLASSES, MODEL_GSD_M, MODELS_DIR, PAPER, PAPER_IOU, PAPER_MEAN_IOU
+from monitor_nepal.imagery import eox, reference
 from monitor_nepal.model import MODELS
 from monitor_nepal.ui import charts, common
 
@@ -221,7 +222,7 @@ A $p$-value from the paired $t$ test is reported with each change.
 
 #### Agreement with a reference map
 Overall agreement, Cohen's $\kappa$, and per-class precision, recall, F1 and IoU against the Impact Observatory 10 m
-map (2017–2025) or ESA WorldCover (2020–2021), with unlabelled and cloud pixels excluded.""")
+map (2017 onwards) or ESA WorldCover (2020–2021), with unlabelled and cloud pixels excluded.""")
 
 with tab_data:
     src = pd.DataFrame(
@@ -236,7 +237,7 @@ with tab_data:
             (
                 "Sentinel-2 cloudless (EOX)",
                 "Annual cloud-free mosaics (2017 is blank over Nepal)",
-                "2016, 2018–2025",
+                f"2016, 2018–{eox.years()[-1]} (new years added monthly)",
                 "10 m",
                 "CC BY 4.0 (2016) / CC BY-NC-SA 4.0",
             ),
@@ -255,7 +256,7 @@ with tab_data:
                 "Public domain",
             ),
             ("NASA GIBS", "Daily MODIS/VIIRS true colour", "2000–now", "250–375 m", "NASA open data"),
-            ("Impact Observatory / Esri LULC", "Reference land cover, 9 classes", "2017–2025", "10 m", "CC BY 4.0"),
+            ("Impact Observatory / Esri LULC", "Reference land cover, 9 classes", f"{reference.years()[0]}–{reference.years()[-1]}", "10 m", "CC BY 4.0"),
             ("ESA WorldCover", "Reference land cover, 11 classes", "2020–2021", "10 m", "CC BY 4.0"),
             ("NASA FIRMS", "Active fires (VIIRS, MODIS)", "2000–now", "375 m / 1 km", "NASA open data"),
             ("USGS ComCat", "Earthquakes", "1900–now", "events", "Public domain"),

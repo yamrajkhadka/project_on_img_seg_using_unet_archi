@@ -68,22 +68,22 @@ with the paper's own loss (0.4 × weighted cross-entropy + 0.6 × focal Tversky)
 
 <!-- EVALUATION -->
 
-**Held-out evaluation** — 132 random 1.22 km windows in 11 districts held out from training (Dhanusa, Ilam, Jumla, Kailali, Kaski, Lalitpur, Mustang, Rasuwa, Rupandehi, Sunsari, Surkhet); imagery and references from 2021; pixels the references mark as cloud/no-data excluded.
+**Held-out evaluation** — 220 random 1.22 km windows in 11 districts held out from training (Dhanusa, Ilam, Jumla, Kailali, Kaski, Lalitpur, Mustang, Rasuwa, Rupandehi, Sunsari, Surkhet); imagery and references from 2021; pixels the references mark as cloud/no-data excluded.
 
 | Imagery | Reference | Original model | Nepal-adapted |
 |---|---|---|---|
-| Esri World Imagery (latest) | ESA WorldCover 2021 | 37% (κ 0.22, mIoU 0.20) | 69% (κ 0.55, mIoU 0.38) |
-| Esri World Imagery (latest) | Impact Observatory 2021 | 39% (κ 0.25, mIoU 0.23) | 74% (κ 0.64, mIoU 0.47) |
-| Landsat 8, Oct-Dec 2021 | ESA WorldCover 2021 | 1% (κ -0.00, mIoU 0.01) | 73% (κ 0.52, mIoU 0.32) |
-| Landsat 8, Oct-Dec 2021 | Impact Observatory 2021 | 1% (κ -0.00, mIoU 0.01) | 68% (κ 0.49, mIoU 0.33) |
-| Sentinel-2 L2A, Oct-Dec 2021 | ESA WorldCover 2021 | 18% (κ 0.09, mIoU 0.11) | 66% (κ 0.51, mIoU 0.33) |
-| Sentinel-2 L2A, Oct-Dec 2021 | Impact Observatory 2021 | 19% (κ 0.09, mIoU 0.10) | 67% (κ 0.54, mIoU 0.37) |
-| Sentinel-2 cloudless 2021 | ESA WorldCover 2021 | 2% (κ 0.00, mIoU 0.02) | 68% (κ 0.53, mIoU 0.37) |
-| Sentinel-2 cloudless 2021 | Impact Observatory 2021 | 1% (κ -0.01, mIoU 0.02) | 70% (κ 0.58, mIoU 0.42) |
+| Esri World Imagery (latest) | ESA WorldCover 2021 | 38% (κ 0.24, mIoU 0.20) | 72% (κ 0.60, mIoU 0.44) |
+| Esri World Imagery (latest) | Impact Observatory 2021 | 39% (κ 0.25, mIoU 0.22) | 82% (κ 0.75, mIoU 0.60) |
+| Landsat 8, Oct-Dec 2021 | ESA WorldCover 2021 | 2% (κ 0.00, mIoU 0.01) | 66% (κ 0.48, mIoU 0.35) |
+| Landsat 8, Oct-Dec 2021 | Impact Observatory 2021 | 2% (κ 0.00, mIoU 0.02) | 70% (κ 0.57, mIoU 0.42) |
+| Sentinel-2 L2A, Oct-Dec 2021 | ESA WorldCover 2021 | 19% (κ 0.11, mIoU 0.11) | 75% (κ 0.64, mIoU 0.46) |
+| Sentinel-2 L2A, Oct-Dec 2021 | Impact Observatory 2021 | 20% (κ 0.11, mIoU 0.11) | 79% (κ 0.72, mIoU 0.56) |
+| Sentinel-2 cloudless 2021 | ESA WorldCover 2021 | 3% (κ 0.01, mIoU 0.02) | 72% (κ 0.61, mIoU 0.46) |
+| Sentinel-2 cloudless 2021 | Impact Observatory 2021 | 2% (κ 0.00, mIoU 0.03) | 76% (κ 0.67, mIoU 0.52) |
 
 Pixel agreement (Cohen's κ, mean IoU over the six land classes). For scale, the two reference maps agree with each other on 77% of the same pixels (κ 0.67) — the practical ceiling for any model scored against them. Impact Observatory also supplied the training labels, so ESA WorldCover is the fairer test.
 
-Validation mean IoU against the weak labels on the held-out districts: 0.111 for the original weights → 0.395 after fine-tuning (epoch 2). This is a **preliminary checkpoint** (2 of 12 planned epochs); finishing the run (`scripts/finetune_nepal.py` resumes automatically, e.g. on a free Kaggle GPU) is expected to improve it further.
+Validation mean IoU against the weak labels on the held-out districts: 0.111 for the original weights → 0.553 after fine-tuning (12 epochs from the paper's weights, best at epoch 10 with 0.490, then a 100-epoch continuation, best at epoch 92, on a free Kaggle Tesla T4 GPU).
 
 <!-- /EVALUATION -->
 

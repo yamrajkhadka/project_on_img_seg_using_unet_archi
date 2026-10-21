@@ -40,8 +40,9 @@ def table() -> str:
         status = (f" This is a **preliminary checkpoint** ({done} of {planned} planned epochs); finishing the run "
                   "(`scripts/finetune_nepal.py` resumes automatically, e.g. on a free Kaggle GPU) is expected to "
                   "improve it further." if done < planned else "")
+        how = log.get("summary") or f"epoch {log['best_epoch']}"
         lines += ["", f"Validation mean IoU against the weak labels on the held-out districts: {base:.3f} for the original "
-                      f"weights → {best:.3f} after fine-tuning (epoch {log['best_epoch']}).{status}"]
+                      f"weights → {best:.3f} after fine-tuning ({how}).{status}"]
     lines += ["", END]
     return "\n".join(lines)
 

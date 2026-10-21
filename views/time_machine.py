@@ -476,6 +476,10 @@ def year_view() -> None:
                 ref = atlas.reference_trend(region)
                 ref = ref[ref.year.between(y0, y1)] if not ref.empty else None
                 common.preliminary_note(settings["model"])
+                common.note("Each year is one Sentinel-2 cloudless mosaic, and the mosaics were processed differently "
+                            "from year to year. Differences of a few points between years can come from that "
+                            "processing rather than from the land, so read the trend next to the independent "
+                            "reference map in grey.")
                 fig = charts.class_trends(trend, x="year", ref=ref, title=f"Land cover of {region.short}, year by year")
                 common.chart_and_table(
                     fig, trend[["label", "class", "share", "low", "high", "km2", "n"]].round(2), key="tm_y_lc"

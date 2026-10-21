@@ -126,10 +126,11 @@ both to ONNX (used here) and back to a `.keras` file loadable with Keras.""")
         best_ep = tlog.get("best_epoch")
         best_val = tlog["epochs"][best_ep - 1]["val"]["all"]["miou"] if best_ep else None
         base_val = tlog["baseline"]["all"]["miou"]
-        st.info(f"**Training status:** {done} of {planned} planned epochs completed. Validation mean IoU on the "
-                f"held-out districts (against the weak labels): {base_val:.3f} with the paper's weights → "
-                f"{best_val:.3f} after epoch {best_ep}." + (" This is a preliminary checkpoint; the remaining epochs "
-                "can be run with `scripts/finetune_nepal.py` (it resumes automatically)." if done < planned else ""),
+        how = tlog.get("summary") or f"after epoch {best_ep}"
+        st.info(f"**Training:** validation mean IoU on the held-out districts (against the weak labels) "
+                f"{base_val:.3f} with the paper's weights → {best_val:.3f} — {how}." +
+                (f" This is a preliminary checkpoint ({done} of {planned} planned epochs); the remaining epochs can "
+                 "be run with `scripts/finetune_nepal.py` (it resumes automatically)." if done < planned else ""),
                 icon=":material/model_training:")
     if eval_path.exists():
         ev = json.loads(eval_path.read_text())

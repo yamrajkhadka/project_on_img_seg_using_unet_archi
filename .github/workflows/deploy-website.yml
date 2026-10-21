@@ -1,0 +1,16 @@
+# Rebuilds nepalmonitor.yamrajkhadka.com.np on Vercel whenever the website or its data changes on main.
+# VERCEL_DEPLOY_HOOK is the project's deploy-hook URL (Vercel -> nepalmonitor -> Settings -> Git -> Deploy Hooks).
+name: deploy-website
+
+on:
+  push:
+    branches: [main]
+    paths: ["web/**"]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a production deployment
+        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"

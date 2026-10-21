@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+/* Design tokens. Land-cover class colours are the validated palette shared with the Streamlit app and the paper's
+   charts; every chart also has a table, so colour is never the only carrier of meaning. */
+:root {
+  --bg: #fbfbf9;
+  --card: #ffffff;
+  --fg: #1c1c1a;
+  --muted: #5d5d58;
+  --line: #e4e4df;
+  --accent: #1f4fbf;
+  --crimson: #c8102e;
+  --good: #1a7f37;
+  --warn: #b35900;
+  --bad: #c62828;
+  --c-urban: #1497b0;
+  --c-agriculture: #eda100;
+  --c-rangeland: #c450b5;
+  --c-forest: #008300;
+  --c-water: #2a78d6;
+  --c-barren: #b5712b;
+  --c-ref: #898781;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121211;
+    --card: #1a1a18;
+    --fg: #ececea;
+    --muted: #a3a39c;
+    --line: #2d2d2a;
+    --accent: #8aa8ff;
+    --crimson: #ff6b7d;
+    --good: #4cc26a;
+    --warn: #f0a24a;
+    --bad: #ff6b6b;
+    --c-urban: #19a5bf;
+    --c-agriculture: #c98500;
+    --c-rangeland: #d55cc6;
+    --c-forest: #1f9a1f;
+    --c-water: #3987e5;
+    --c-barren: #c07a35;
+    --c-ref: #8f8d86;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-crimson: var(--crimson);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 2px;
+}
+
+.prose-site p {
+  margin: 0.6rem 0;
+  line-height: 1.65;
+  max-width: 72ch;
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+table.data th,
+table.data td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+table.data td.num,
+table.data th.num {
+  text-align: right;
+}
+table.data thead th {
+  color: var(--muted);
+  font-weight: 500;
+}

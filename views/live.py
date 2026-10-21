@@ -334,12 +334,14 @@ if summary is None:
     )
 else:
     est, epoch_label, n_sites = summary
+    common.model_badge(settings["model"])
+    st.caption(f"Imagery: {epoch_label}")
     common.preliminary_note(settings["model"])
     c1, c2 = st.columns([2.2, 1], gap="medium")
     with c1:
         fig = charts.composition_bar(
             est.set_index("key")["share"].reindex([c for c in est.key]).values,
-            title=f"Share of Nepal's area · {epoch_label}",
+            title="Share of Nepal's area",
         )
         common.chart_and_table(fig, est[["class", "share", "low", "high", "km2"]].round(2), key="live_atlas")
     with c2:
@@ -355,6 +357,7 @@ else:
             "Built-up", f"{urban.share:.1f}%", border=True, help=f"95% interval {urban.low:.1f}–{urban.high:.1f}%."
         )
         st.page_link("views/time_machine.py", label="See how it changed, year by year", icon=":material/history:")
+        st.page_link("views/methods.py", label="How the model was tested", icon=":material/model_training:")
     common.note(
         f"Design-based estimate from {n_sites} stratified random sites (every district), classified by the "
         f"{MODELS[settings['model']].short} model. Barren land includes rock, glaciers and permanent snow."

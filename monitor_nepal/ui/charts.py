@@ -78,6 +78,8 @@ def composition_bar(shares: pd.Series | np.ndarray, *, title: str | None = None,
                     textfont=dict(color=_ink_on(col), size=12), hovertemplate=f"{c.name}: %{{x:.1f}}%<extra></extra>")
     fig.update_layout(barmode="stack")
     style(fig, height, hovermode="closest", title=title)
+    if title:  # six class names wrap to two legend rows: leave room for them under the title
+        fig.update_layout(height=height + 30, margin_t=104)
     fig.update_xaxes(range=[0, max(100, shares.sum())], ticksuffix="%", showgrid=False)
     fig.update_yaxes(showticklabels=False, showgrid=False)
     fig.update_traces(width=0.42)

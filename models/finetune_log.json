@@ -7515,5 +7515,6 @@
    ]
   }
  },
- "summary": "12 epochs from the paper's weights, best at epoch 10 with 0.490, then a 100-epoch continuation, best at epoch 92, on a free Kaggle Tesla T4 GPU"
+ "summary": "12 epochs from the paper's weights, best at epoch 10 with 0.490, then a 100-epoch continuation, best at epoch 92, on a free Kaggle Tesla T4 GPU",
+ "updated": "2026-10-21"
 }

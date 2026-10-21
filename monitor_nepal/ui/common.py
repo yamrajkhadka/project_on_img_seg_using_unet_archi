@@ -168,6 +168,26 @@ def preliminary_note(model_key: str) -> None:
                    "map shown in grey.")
 
 
+def model_badge(model_key: str) -> None:
+    """Which network produced the figures below, how well it scores, and when it was last updated."""
+    import json
+
+    from ..config import MODELS_DIR, PAPER_MEAN_IOU
+
+    path = MODELS_DIR / "finetune_log.json"
+    if model_key == "nepal" and path.exists():
+        log = json.loads(path.read_text())
+        best = log["epochs"][log["best_epoch"] - 1]["val"]["all"]["miou"]
+        label = (f"Nepal-adapted U-Net · validation mIoU {best:.3f} on held-out districts "
+                 f"(paper weights: {log['baseline']['all']['miou']:.3f})")
+        if log.get("updated"):
+            label += f" · updated {datetime.fromisoformat(log['updated']):%-d %b %Y}"
+        st.badge(label, icon=":material/verified:", color="green")
+    elif model_key == "paper":
+        st.badge(f"Original U-Net from the paper · DeepGlobe test mIoU {PAPER_MEAN_IOU:.3f}", icon=":material/article:",
+                 color="gray")
+
+
 def model_source_warning(model_key: str, *kinds: str) -> None:
     """The original DeepGlobe network was trained on sub-metre imagery; on 10-30 m imagery it fails."""
     if model_key == "paper" and any(k in LOW_RES_KINDS for k in kinds):

@@ -1,6 +1,7 @@
 /** Typed access to the data exported by scripts/export_web.py (web/data/*.json). Server-side only. */
 import climateJson from "../../data/climate.json";
 import eventsJson from "../../data/events.json";
+import hazardsJson from "../../data/hazards.json";
 import landcoverJson from "../../data/landcover.json";
 import localJson from "../../data/local_landcover.json";
 import modelJson from "../../data/model.json";
@@ -112,7 +113,7 @@ export function townOf(districtCode: string): Town | undefined {
 /** The district's town name when it is a real seat or a sizeable town, for page titles. */
 export function placeLabel(d: Region): string {
   const t = towns[d.code];
-  const notable = t && t.town !== d.name && (/^PPL(C|A)/.test(t.kind) || t.population >= 10000);
+  const notable = t && !t.town.startsWith(d.name) && (/^PPL(C|A)/.test(t.kind) || t.population >= 10000);
   return notable ? `${t.town}, ${d.name}` : d.name;
 }
 
@@ -133,4 +134,10 @@ export const model = modelJson as unknown as {
   evaluation: string;
   results: { model: string; source: string; reference: string; overall: number; kappa: number; miou: number }[];
   inter_reference?: { overall: number; kappa: number };
+};
+
+export interface FireYear { total: number; months: number[]; districts: Record<string, number> }
+export const hazards = hazardsJson as unknown as {
+  fires: Record<string, Record<string, FireYear>>;
+  quakes: Record<string, { m4: number; m5: number; m6: number }>;
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { areaTitle } from "@/components/AreaPage";
-import { HourlyChart } from "@/components/charts";
+import { BarChart, HourlyChart } from "@/components/charts";
 import { Breadcrumbs, JsonLd, PageHeader, Section, Source, Stat } from "@/components/ui";
 import { placeLabel, regionByCode, regionBySlug, townOf } from "@/lib/data";
 import { fmt, nptDate, WEATHER_CODES } from "@/lib/format";
@@ -35,7 +35,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   const c = w?.current;
   const nowIdx = w ? Math.max(0, w.hourly.time.findIndex((t) => t >= c!.time.slice(0, 13) + ":00")) : 0;
   const next48 = w ? { t: w.hourly.time.slice(Math.max(0, nowIdx - 12), nowIdx + 48), v: w.hourly.temperature_2m.slice(Math.max(0, nowIdx - 12), nowIdx + 48) } : null;
-  const tomorrow = w ? 1 : -1;
+  // daily arrays run from 30 days ago to 6 days ahead
+  const t0 = w ? Math.max(0, w.daily.time.indexOf(c!.time.slice(0, 10))) : 0;
+  const tomorrow = t0 + 1;
+  const past = w ? w.daily.time.slice(0, t0).map((day, i) => ({ day, max: w.daily.temperature_2m_max[i], min: w.daily.temperature_2m_min[i], rain: w.daily.precipitation_sum[i] })) : [];
+  const pastRain = past.reduce((s, p) => s + (p.rain ?? 0), 0);
   const faq = w && c ? [
     { q: `What is the temperature in ${place} now?`, a: `It is ${fmt(c.temperature_2m, 1)}°C in ${town.town} (feels like ${fmt(c.apparent_temperature, 1)}°C), ${(WEATHER_CODES[c.weather_code] ?? "").toLowerCase()}, with ${c.relative_humidity_2m}% humidity, at ${c.time.slice(11)} Nepal time.` },
     { q: `Will it rain in ${place} tomorrow?`, a: `The chance of rain tomorrow is ${fmt(w.daily.precipitation_probability_max[tomorrow])}% with about ${fmt(w.daily.precipitation_sum[tomorrow], 1)} mm expected; temperatures from ${fmt(w.daily.temperature_2m_min[tomorrow])}°C to ${fmt(w.daily.temperature_2m_max[tomorrow])}°C.` },
@@ -52,7 +56,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <Stat label="Temperature" value={`${fmt(c.temperature_2m, 1)}°C`} sub={`Feels like ${fmt(c.apparent_temperature, 1)}°C · ${WEATHER_CODES[c.weather_code] ?? ""}`} />
             <Stat label="Humidity" value={`${c.relative_humidity_2m}%`} sub={`Rain now ${fmt(c.precipitation, 1)} mm`} />
             <Stat label="Wind" value={`${fmt(c.wind_speed_10m)} km/h`} sub={`from the ${compass(c.wind_direction_10m)}`} />
-            <Stat label="Today" value={`${fmt(w.daily.temperature_2m_min[0])}° / ${fmt(w.daily.temperature_2m_max[0])}°`} sub={`Sunrise ${w.daily.sunrise[0].slice(11)} · sunset ${w.daily.sunset[0].slice(11)}`} />
+            <Stat label="Today" value={`${fmt(w.daily.temperature_2m_min[t0])}° / ${fmt(w.daily.temperature_2m_max[t0])}°`} sub={`Sunrise ${w.daily.sunrise[t0].slice(11)} · sunset ${w.daily.sunset[t0].slice(11)}`} />
           </div>
           {next48 && (
             <Section title="Temperature, next 48 hours" note="°C; solid line past hours, dashed line forecast.">
@@ -63,7 +67,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <div className="overflow-x-auto">
               <table className="data">
                 <thead><tr><th>Day</th><th>Weather</th><th className="num">Min °C</th><th className="num">Max °C</th><th className="num">Rain (mm)</th><th className="num">Chance of rain</th><th className="num">UV index</th></tr></thead>
-                <tbody>{w.daily.time.map((day, i) => (
+                <tbody>{w.daily.time.map((day, i) => i < t0 ? null : (
                   <tr key={day}><td>{nptDate(`${day}T12:00:00+05:45`, { weekday: "short", year: undefined })}</td><td>{WEATHER_CODES[w.daily.weather_code[i]] ?? ""}</td>
                     <td className="num">{fmt(w.daily.temperature_2m_min[i])}</td><td className="num">{fmt(w.daily.temperature_2m_max[i])}</td>
                     <td className="num">{fmt(w.daily.precipitation_sum[i], 1)}</td><td className="num">{fmt(w.daily.precipitation_probability_max[i])}%</td><td className="num">{fmt(w.daily.uv_index_max[i], 1)}</td></tr>
@@ -71,6 +75,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
               </table>
             </div>
           </Section>
+          {past.length > 0 && (
+            <Section title="The last 30 days" note={`Daily rain (bars); ${fmt(pastRain)} mm in total. Highest temperature ${fmt(Math.max(...past.map((p) => p.max)), 1)}°C, lowest ${fmt(Math.min(...past.map((p) => p.min)), 1)}°C.`}>
+              <BarChart data={past.map((p) => ({ x: p.day.slice(5), v: p.rain ?? 0 }))} unit="mm" label={`Daily rain in ${place} over the last 30 days`} />
+            </Section>
+          )}
         </>
       ) : <p className="mb-10 text-muted">The weather service is not responding right now; please check again in a few minutes.</p>}
       {faq.length > 0 && (

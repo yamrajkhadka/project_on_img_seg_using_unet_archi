@@ -26,6 +26,7 @@ export const siteConfig = {
 } as const;
 
 export const nav = [
+  { href: "/alerts", label: "Alerts" },
   { href: "/air-quality", label: "Air quality" },
   { href: "/weather", label: "Weather" },
   { href: "/earthquakes", label: "Earthquakes" },
@@ -33,4 +34,6 @@ export const nav = [
   { href: "/rivers", label: "Rivers" },
   { href: "/land-cover", label: "Land cover" },
   { href: "/districts", label: "Districts" },
+  { href: "/map", label: "AI map" },
+  { href: "/time-machine", label: "Time machine" },
 ] as const;

@@ -195,6 +195,67 @@ def export_static() -> None:
     })
 
 
+def export_hazards() -> None:
+    """Fire detections per year, month and district (NASA FIRMS archive) and earthquakes per year (USGS), adding
+    only years not already exported, so the monthly run just appends each newly published year."""
+    from datetime import datetime, timezone
+
+    from monitor_nepal.live import fires
+
+    path = OUT / "hazards.json"
+    doc = json.loads(path.read_text()) if path.exists() else {"fires": {}, "quakes": {}}
+    last = fires.latest_archive_year()
+    for product, (_, first) in fires.ARCHIVE_PRODUCTS.items():
+        have = doc["fires"].setdefault(product, {})
+        for year in range(max(first, 2001), last + 1):
+            if str(year) in have:
+                continue
+            try:
+                df = fires.archive(year, product)
+            except (FetchError, ValueError) as exc:
+                print(f"fires {product} {year}: skipped ({exc})", flush=True)
+                continue
+            local = df.time_utc.dt.tz_convert("Asia/Kathmandu")
+            have[str(year)] = {
+                "total": int(len(df)),
+                "months": [int((local.dt.month == m).sum()) for m in range(1, 13)],
+                "districts": {k: int(v) for k, v in df.district.value_counts().items()},
+            }
+            print(f"fires {product} {year}: {len(df):,}", flush=True)
+            time.sleep(1)
+    this_year = datetime.now(timezone.utc).year
+    for year in range(1950, this_year):
+        if str(year) in doc["quakes"]:
+            continue
+        counts = {}
+        for mag in (4, 5, 6):
+            try:
+                n = get_json("https://earthquake.usgs.gov/fdsnws/event/1/count", params={
+                    "format": "geojson", "starttime": f"{year}-01-01", "endtime": f"{year + 1}-01-01", "minmagnitude": mag,
+                    "minlatitude": 25.4, "maxlatitude": 31.3, "minlongitude": 79.2, "maxlongitude": 89.2}, timeout=60)
+                counts[f"m{mag}"] = int(n["count"])
+            except (FetchError, KeyError, TypeError):
+                counts = {}
+                break
+        if counts:
+            doc["quakes"][str(year)] = counts
+    dump("hazards.json", doc)
+
+
+def export_tools() -> None:
+    """What the in-browser AI tools need: both models (served from web/public) and the yearly colour statistics."""
+    import shutil
+
+    public = OUT.parent / "public" / "models"
+    public.mkdir(parents=True, exist_ok=True)
+    for name in ("unet_nepal.onnx", "unet_deepglobe.onnx"):
+        src, dst = MODELS_DIR / name, public / name
+        if not dst.exists() or dst.read_bytes() != src.read_bytes():
+            shutil.copyfile(src, dst)
+            print(f"copied {name}", flush=True)
+    shutil.copyfile(eox.RADIOMETRY, OUT / "eox_radiometry.json")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--towns", action="store_true", help="re-geocode the main town of every district")
@@ -203,6 +264,8 @@ def main() -> None:
     export_regions()
     export_landcover()
     export_static()
+    export_tools()
+    export_hazards()
     export_towns(args.towns)
 
 

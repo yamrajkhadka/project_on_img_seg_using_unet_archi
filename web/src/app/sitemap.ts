@@ -8,7 +8,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ({ url: `${siteConfig.url}${path}`, lastModified: now, changeFrequency, priority });
   return [
     u("", "hourly", 1),
-    ...["/air-quality", "/weather", "/earthquakes", "/fires", "/rivers"].map((p) => u(p, "hourly", 0.9)),
+    ...["/alerts", "/air-quality", "/weather", "/earthquakes", "/fires", "/rivers"].map((p) => u(p, "hourly", 0.9)),
+    ...["/map", "/change", "/model-lab", "/time-machine"].map((p) => u(p, "monthly", 0.8)),
     ...["/land-cover", "/provinces", "/districts", "/municipalities", "/climate", "/history", "/research"].map((p) => u(p, "monthly", 0.8)),
     ...["/about", "/contact", "/privacy", "/terms"].map((p) => u(p, "yearly", 0.3)),
     ...regionsAt(2).flatMap((d) => [u(`/air-quality/${d.slug}`, "hourly", 0.8), u(`/weather/${d.slug}`, "hourly", 0.8), u(`/districts/${d.slug}`, "monthly", 0.7)]),

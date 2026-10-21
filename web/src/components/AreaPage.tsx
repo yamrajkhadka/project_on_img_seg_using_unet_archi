@@ -1,10 +1,10 @@
 /** The page of a province or district: map, AI land cover with its trend and the reference map, sub-regions, FAQ. */
 import Link from "next/link";
-import { ClassTrends, ShareBar } from "@/components/charts";
+import { BarChart, ClassTrends, ShareBar } from "@/components/charts";
 import { RegionMap } from "@/components/RegionMap";
 import { Breadcrumbs, Card, JsonLd, PageHeader, Section, Source, Stat, TableTwin } from "@/components/ui";
 import {
-  ancestors, CLASS_KEYS, CLASS_NAME, childrenOf, LEVEL_NAME, landCoverOf, landcover, localLandCover, placeLabel,
+  ancestors, CLASS_KEYS, CLASS_NAME, childrenOf, hazards, LEVEL_NAME, landCoverOf, landcover, localLandCover, placeLabel,
   type Region, regionByCode, regionHref, townOf,
 } from "@/lib/data";
 import { fmt, km2, pct } from "@/lib/format";
@@ -41,6 +41,15 @@ export function AreaPage({ r }: { r: Region }) {
     const loc = r.level === 2 ? localLandCover(k.code).at(-1)?.share : latestShare(k.code);
     return { k, s: loc };
   });
+
+  // satellite fire detections in this area each year (VIIRS), from the per-district archive counts
+  const names = new Set(r.level === 2 ? [r.name] : kids.map((k) => k.name));
+  const viirs = hazards.fires["VIIRS S-NPP"] ?? {};
+  const fireYears = Object.keys(viirs).sort().map((y) => ({
+    x: y, v: Object.entries(viirs[y].districts).reduce((s, [d, n]) => s + (names.has(d) ? n : 0), 0),
+  }));
+  const fireMean = fireYears.length ? fireYears.reduce((s, f) => s + f.v, 0) / fireYears.length : 0;
+  const fireWorst = [...fireYears].sort((a, b) => b.v - a.v)[0];
 
   const faq = share ? [
     { q: `What is the forest cover of ${title}?`, a: `About ${fmt(share.forest, 1)}% of ${title} is forest (95% interval ${fmt(lc!.latest.forest[1], 1)}–${fmt(lc!.latest.forest[2], 1)}%), roughly ${km2(lc!.latest.forest[3])}, according to the Nepal-adapted U-Net applied to ${lc!.n} sample sites.${forestRank ? ` That ranks ${ordinal(forestRank.rank)} of ${forestRank.of} ${peers}.` : ""}` },
@@ -84,7 +93,7 @@ export function AreaPage({ r }: { r: Region }) {
       )}
 
       {lc && Object.keys(lc.trend).length > 1 && (
-        <Section title={`${title} year by year`} note={<>Coloured lines: the U-Net on each year&apos;s Sentinel-2 cloudless mosaic, with 95% intervals. Grey: the independent 10 m Impact Observatory map at the same sites. Differences of a few points between years can come from how each year&apos;s mosaic was processed.</>}>
+        <Section title={`${title} year by year`} note={<>Coloured lines: the U-Net on each year&apos;s Sentinel-2 cloudless mosaic, with 95% intervals. Grey: the independent 10 m Impact Observatory map at the same sites. Differences of a few points between years can come from how each year&apos;s mosaic was processed, and the 2016 and 2018 mosaics are read less reliably (too little built-up land, too much bare land and water); compare from 2019 on.</>}>
           <ClassTrends trend={lc.trend} reference={lc.reference} />
           {ref0 && ref1 && (
             <p className="mt-4 text-sm">
@@ -114,6 +123,13 @@ export function AreaPage({ r }: { r: Region }) {
           </table>
         </div>
       </Section>
+
+      {fireYears.some((f) => f.v > 0) && (
+        <Section title={`Fires in ${title} each year`} note={`Satellite fire detections (NASA FIRMS, VIIRS S-NPP) inside ${title}: about ${Math.round(fireMean).toLocaleString("en-US")} a year on average, most in ${fireWorst.x} (${fireWorst.v.toLocaleString("en-US")}).`}>
+          <BarChart data={fireYears} unit="detections" label={`Fire detections in ${title} per year`} />
+          <p className="mt-2 text-sm"><Link href="/fires">Fires in Nepal right now</Link></p>
+        </Section>
+      )}
 
       {faq.length > 0 && (
         <Section title={`Questions about ${title}`}>

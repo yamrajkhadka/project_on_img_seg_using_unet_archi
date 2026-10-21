@@ -60,6 +60,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <ul className="space-y-1">
               <li><Link href="/provinces">Provinces</Link> · <Link href="/districts">Districts</Link> · <Link href="/municipalities">Municipalities</Link></li>
               <li><Link href="/climate">Climate</Link> · <Link href="/history">History</Link> · <Link href="/research">Research &amp; model</Link></li>
+              <li><Link href="/map">AI map</Link> · <Link href="/change">Change detection</Link> · <Link href="/model-lab">Model lab</Link> · <Link href="/time-machine">Time machine</Link></li>
               <li><a href={siteConfig.appUrl}>Interactive analysis app</a></li>
             </ul>
             <ul className="space-y-1">

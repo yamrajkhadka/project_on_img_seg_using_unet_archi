@@ -37,7 +37,7 @@ export interface Weather {
 
 export function weather(p: Point, revalidate = 1800) {
   return getJson<Weather>(FORECAST, {
-    latitude: p.lat, longitude: p.lon, timezone: "Asia/Kathmandu", forecast_days: 7,
+    latitude: p.lat, longitude: p.lon, timezone: "Asia/Kathmandu", forecast_days: 7, past_days: 30,
     current: "temperature_2m,apparent_temperature,relative_humidity_2m,precipitation,weather_code,wind_speed_10m,wind_direction_10m,is_day",
     hourly: "temperature_2m,precipitation_probability,precipitation",
     daily: "weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_probability_max,sunrise,sunset,uv_index_max",
@@ -158,4 +158,14 @@ export async function fires(window: "24h" | "7d" = "24h", revalidate = 1800): Pr
   }));
   if (all.every((x) => x === null)) return null;
   return all.flatMap((x) => x ?? []);
+}
+
+/** Daily rain forecast (mm) for many places, next 3 days, in one request. */
+export async function rainMany(points: Point[], revalidate = 3600) {
+  const data = await getJson<{ daily: { time: string[]; precipitation_sum: number[] } } | { daily: { time: string[]; precipitation_sum: number[] } }[]>(FORECAST, {
+    latitude: points.map((p) => p.lat).join(","), longitude: points.map((p) => p.lon).join(","),
+    timezone: "Asia/Kathmandu", daily: "precipitation_sum", forecast_days: 3,
+  }, revalidate);
+  if (!data) return null;
+  return Array.isArray(data) ? data : [data];
 }

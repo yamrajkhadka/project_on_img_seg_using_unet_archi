@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { RegionMap } from "@/components/RegionMap";
+import { Choropleths } from "@/components/Choropleth";
 import { PageHeader, Section, Source } from "@/components/ui";
 import { childrenOf, regionsAt } from "@/lib/data";
 import { fmt } from "@/lib/format";
@@ -18,7 +18,7 @@ export default function Page() {
     <>
       <PageHeader eyebrow="Districts" title="The 77 districts of Nepal"
         intro={<p>Forest, farmland and built-up shares of every district, estimated by the Nepal-adapted U-Net from satellite imagery. Select a district for its map, trend since 2016, municipalities, air quality and weather.</p>} />
-      <RegionMap label="Map of Nepal's 77 districts" contextLevel={2} context={regionsAt(2).map((d) => d.code)} />
+      <Choropleths keys={["forest"]} />
       {provinces.map((p) => (
         <Section key={p.code} title={`${p.name} Province`}>
           <div className="overflow-x-auto">

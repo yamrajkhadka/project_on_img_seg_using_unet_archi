@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ClassTrends, ShareBar } from "@/components/charts";
+import { Choropleths } from "@/components/Choropleth";
 import { PageHeader, Section, Source, TableTwin } from "@/components/ui";
 import { CLASS_KEYS, CLASS_NAME, childrenOf, landCoverOf, landcover, regionsAt } from "@/lib/data";
 import { fmt, km2 } from "@/lib/format";
@@ -25,9 +26,12 @@ export default function Page() {
         <TableTwin caption="Land cover of Nepal" head={["Class", "Share (%)", "95% interval", "Area"]}
           rows={CLASS_KEYS.map((k) => [CLASS_NAME[k], fmt(lc.latest[k][0], 1), `${fmt(lc.latest[k][1], 1)}–${fmt(lc.latest[k][2], 1)}`, km2(lc.latest[k][3])])} />
       </Section>
-      <Section title="Year by year" note="Coloured: the U-Net on each year's Sentinel-2 cloudless mosaic with 95% intervals; grey: the independent 10 m Impact Observatory map. Year-to-year differences of a few points can come from mosaic processing.">
+      <Section title="Year by year" note="Coloured: the U-Net on each year's Sentinel-2 cloudless mosaic with 95% intervals; grey: the independent 10 m Impact Observatory map. Year-to-year differences of a few points can come from mosaic processing; the 2016 and 2018 mosaics are read less reliably (too little built-up land, too much bare land and water), so compare from 2019 on.">
         <ClassTrends trend={lc.trend} reference={lc.reference} />
         <p className="mt-4">Each year in detail: {landcover.years.map((y, i) => <span key={y}>{i ? " · " : ""}<Link href={`/land-cover/${y}`}>{y}</Link></span>)}</p>
+      </Section>
+      <Section title="Across the districts" note="Each district's share from the U-Net on the latest high-resolution imagery (8 or more sample sites per district).">
+        <Choropleths keys={["forest", "urban", "agriculture"]} />
       </Section>
       <Section title="By province and district">
         {regionsAt(1).map((p) => (

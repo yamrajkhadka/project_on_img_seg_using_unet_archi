@@ -37,6 +37,9 @@ export default async function Page({ params }: { params: Promise<{ year: string 
       <Breadcrumbs items={[{ href: "/land-cover", label: "Land cover" }, { label: year }]} />
       <PageHeader eyebrow={`Sentinel-2 cloudless ${year}`} title={`Nepal's land cover in ${year}`}
         intro={<p>The Nepal-adapted U-Net applied to the {year} Sentinel-2 cloudless annual mosaic (10 m) at {nat!.n} stratified sample sites: forest {fmt(t.forest[0], 1)}%, farmland {fmt(t.agriculture[0], 1)}%, rangeland {fmt(t.rangeland[0], 1)}%, built-up {fmt(t.urban[0], 1)}%, bare land {fmt(t.barren[0], 1)}% and water {fmt(t.water[0], 1)}%.</p>} />
+      {(year === "2016" || year === "2018") && (
+        <p className="mb-6 rounded-xl border border-line bg-card p-4 text-sm" style={{ color: "var(--warn)" }}>The {year} mosaic was processed differently from later years and the model reads it less reliably: built-up land is underestimated and bare land and water overestimated. Use 2019 and later for comparisons.</p>
+      )}
       <Section title={`Nepal in ${year}`}>
         <ShareBar share={share} label={`Share of Nepal by land-cover class in ${year}`} />
         <TableTwin caption={`Nepal land cover ${year}`} head={["Class", "U-Net (%)", "95% interval", ...(tp ? [`Change since ${prev}`] : []), ...(ref ? ["Reference map (%)"] : [])]}

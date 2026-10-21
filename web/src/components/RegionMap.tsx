@@ -10,7 +10,7 @@ export interface MapPoint {
   label?: string;
 }
 
-export function RegionMap({ highlight, context, contextLevel, frame, points = [], label, height = 360 }: {
+export function RegionMap({ highlight, context, contextLevel, frame, points = [], label, height = 360, fills }: {
   highlight?: { level: number; code: string };
   /** codes of neighbouring regions drawn faintly (same level as contextLevel) */
   context?: string[];
@@ -20,6 +20,8 @@ export function RegionMap({ highlight, context, contextLevel, frame, points = []
   points?: MapPoint[];
   label: string;
   height?: number;
+  /** fill colour per context region (choropleth) */
+  fills?: Record<string, string>;
 }) {
   const [x0, y0, x1, y1] = frame ?? country.bbox;
   const pad = Math.max(x1 - x0, y1 - y0) * 0.06;
@@ -31,7 +33,7 @@ export function RegionMap({ highlight, context, contextLevel, frame, points = []
     <svg viewBox={vb} className="w-full rounded-xl border border-line bg-card" style={{ maxHeight: height }} role="img" aria-label={label}>
       <path d={nepalPath} fill="var(--bg)" stroke="var(--muted)" strokeWidth={1.2 * scale} />
       {(context ?? []).map((c) => ctx[c] && (
-        <path key={c} d={ctx[c]} fill="none" stroke="var(--line)" strokeWidth={0.8 * scale} />
+        <path key={c} d={ctx[c]} fill={fills?.[c] ?? "none"} stroke={fills ? "var(--card)" : "var(--line)"} strokeWidth={0.8 * scale} />
       ))}
       {hl && <path d={hl} fill="var(--accent)" fillOpacity={0.18} stroke="var(--accent)" strokeWidth={1.6 * scale} />}
       {points.map((p, i) => {

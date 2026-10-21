@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { BarChart } from "@/components/charts";
 import { RegionMap } from "@/components/RegionMap";
 import { JsonLd, PageHeader, Section, Source, Stat } from "@/components/ui";
-import { regionsAt } from "@/lib/data";
+import { hazards, regionsAt } from "@/lib/data";
 import { ago, fmt, nowMs, nptDate, nptTime } from "@/lib/format";
 import { quakes } from "@/lib/live";
 
@@ -48,6 +49,11 @@ export default async function Page() {
             <thead><tr><th>Date</th><th className="num">Magnitude</th><th>Location</th><th className="num">Depth (km)</th></tr></thead>
             <tbody>{[...big].sort((a, b) => b.mag - a.mag).slice(0, 40).map((q) => <tr key={q.id}><td>{nptDate(q.time)}</td><td className="num">M{q.mag.toFixed(1)}</td><td><a href={q.url}>{q.place}</a></td><td className="num">{fmt(q.depth)}</td></tr>)}</tbody>
           </table></div>
+        </Section>
+      )}
+      {Object.keys(hazards.quakes).length > 0 && (
+        <Section title="Earthquakes per year since 1950" note="Magnitude 4 and above in the search area (USGS). Earlier decades miss many smaller events; the 2015 spike is the Gorkha earthquake and its aftershocks.">
+          <BarChart data={Object.entries(hazards.quakes).map(([y, c]) => ({ x: y, v: c.m4 }))} unit="earthquakes M4+" label="Earthquakes of magnitude 4 or more per year around Nepal" />
         </Section>
       )}
       <Section title="Questions about earthquakes in Nepal">

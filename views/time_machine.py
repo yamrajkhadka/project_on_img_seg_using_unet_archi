@@ -485,7 +485,9 @@ def year_view() -> None:
                     fig, trend[["label", "class", "share", "low", "high", "km2", "n"]].round(2), key="tm_y_lc"
                 )
                 eps = atlas.epochs(settings["model"])
-                yr = [e for e in eps if e.startswith("eox-")]
+                # the 2016 and 2018 mosaics are read less reliably (built-up land comes out as barren or
+                # rangeland), so change is measured from the first reliable year
+                yr = [e for e in eps if e.startswith("eox-") and e not in ("eox-2016", "eox-2018")]
                 if len(yr) >= 2:
                     ch = atlas.change(region, settings["model"], yr[0], yr[-1])
                     if ch is not None:

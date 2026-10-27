@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import Script from "next/script";
+import { AdSense } from "@/components/AdSense";
 import { JsonLd } from "@/components/ui";
 import { nav, siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -32,8 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen">
-        <Script async strategy="afterInteractive" crossOrigin="anonymous"
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsenseClient}`} />
+        <AdSense client={siteConfig.adsenseClient} />
         <JsonLd data={{
           "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, url: siteConfig.url,
           description: siteConfig.description, inLanguage: "en",
@@ -67,6 +66,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <li><Link href="/about">About</Link> · <Link href="/contact">Contact</Link></li>
               <li><Link href="/privacy">Privacy policy</Link> · <Link href="/terms">Terms of use</Link></li>
               <li>© {new Date().getFullYear()} {siteConfig.author}</li>
+              <li>
+                More free sites: <a href="https://nepallaw.yamrajkhadka.com.np/">Nepal Law AI</a> ·{" "}
+                <a href="https://filecraft.yamrajkhadka.com.np/">FileCraft</a> · <a href="https://calcnepal.pages.dev/">CalcNepal</a> ·{" "}
+                <a href="https://lingua.yamrajkhadka.com.np/">Lingua</a> · <a href="https://blog.yamrajkhadka.com.np/blog/">Blog</a>
+              </li>
             </ul>
           </div>
         </footer>

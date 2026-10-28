@@ -1,11 +1,23 @@
-# nepalmonitor.yamrajkhadka.com.np on Cloudflare (free plan): static files only, served free and without limit.
+# nepalmonitor.yamrajkhadka.com.np on Cloudflare (free plan): static files, served free and without limit; worker.js
+# only gives the share image its content type.
 # `npm run build` writes out/; .github/workflows/deploy-website.yml rebuilds and deploys it every 3 hours (so the
-# live pages stay current) and whenever web/ changes on main.
+# live pages stay current) and whenever web/ changes on main. The route takes the hostname over as soon as it is
+# deployed (its DNS record is proxied by Cloudflare); monitornepal. 301s here from the Worker domain-redirects.
 name = "nepalmonitor"
+account_id = "0f6802281dc6fd8bcd7bf4f780b37a46"
+main = "worker.js"
+no_bundle = true
+find_additional_modules = false # else no_bundle uploads every .js file under web/, node_modules included
 compatibility_date = "2026-10-01"
-workers_dev = true
+workers_dev = false
 
 [assets]
 directory = "./out"
+binding = "ASSETS"
 html_handling = "auto-trailing-slash"
 not_found_handling = "404-page"
+run_worker_first = ["/opengraph-image"]
+
+[[routes]]
+pattern = "nepalmonitor.yamrajkhadka.com.np/*"
+zone_id = "7021b2366c32b3eef7b18687055c912d" # yamrajkhadka.com.np; an id, so the deploy token needs no zone access

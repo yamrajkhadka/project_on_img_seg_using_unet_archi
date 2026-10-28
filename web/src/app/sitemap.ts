@@ -7,8 +7,14 @@ export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const u = (path: string, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], priority: number) =>
-    ({ url: `${siteConfig.url}${path}`, lastModified: now, changeFrequency, priority });
+  // Only the live pages (hourly, daily) change with every scheduled rebuild. The others change when their data is
+  // re-exported, so they get no lastmod rather than a wrong one: Google stops trusting a lastmod that is always "now".
+  const u = (path: string, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], priority: number) => ({
+    url: `${siteConfig.url}${path}`,
+    ...(changeFrequency === "hourly" || changeFrequency === "daily" ? { lastModified: now } : {}),
+    changeFrequency,
+    priority,
+  });
   return [
     u("", "hourly", 1),
     ...["/alerts", "/air-quality", "/weather", "/earthquakes", "/fires", "/rivers"].map((p) => u(p, "hourly", 0.9)),

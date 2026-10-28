@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # to start deploy-website
 
 jobs:
   atlas:
@@ -43,5 +44,7 @@ jobs:
           git diff --cached --quiet || (git commit -m "Monthly refresh: new years and latest imagery" &&
             git pull --rebase origin main && git push)
       - name: Rebuild the website with the new data
-        # pushes made with the workflow's own token do not start other workflows, so call the deploy hook here
-        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
+        # pushes made with the workflow's own token do not start other workflows, but a dispatch does
+        run: gh workflow run deploy-website.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}

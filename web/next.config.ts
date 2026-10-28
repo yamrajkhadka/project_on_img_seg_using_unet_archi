@@ -4,6 +4,9 @@ import type { NextConfig } from "next";
 // schedule by .github/workflows/deploy-website.yml.
 const nextConfig: NextConfig = {
   output: "export",
+  // A fixed build ID keeps unchanged pages byte-identical between the scheduled rebuilds, so each deploy uploads
+  // only the pages whose data changed.
+  generateBuildId: async () => "nepalmonitor",
 };
 
 export default nextConfig;

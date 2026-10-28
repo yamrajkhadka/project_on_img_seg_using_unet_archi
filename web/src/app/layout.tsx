@@ -67,7 +67,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               <li>
                 More free sites: <a href="https://nepallaw.yamrajkhadka.com.np/">Nepal Law AI</a> ·{" "}
                 <a href="https://filecraft.yamrajkhadka.com.np/">FileCraft</a> · <a href="https://calcnepal.pages.dev/">CalcNepal</a> ·{" "}
-                <a href="https://lingua.yamrajkhadka.com.np/">Lingua</a> · <a href="https://blog.yamrajkhadka.com.np/blog/">Blog</a>
+                <a href="https://lingua.yamrajkhadka.com.np/">Lingua</a> ·{" "}
+                <a href="https://scholaratlas.yamrajkhadka.com.np/">Scholar Atlas</a> · <a href="https://blog.yamrajkhadka.com.np/blog/">Blog</a>
               </li>
             </ul>
           </div>

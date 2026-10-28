@@ -3,7 +3,8 @@
 # current. About 3-5 minutes a run, so the schedule fits the 2,000 free Actions minutes a month of a private repo
 # (only web/ is checked out, and only pages whose data changed are uploaded).
 # Repository secret: CLOUDFLARE_API_TOKEN (Cloudflare dashboard -> My Profile -> API Tokens -> "Edit Cloudflare
-# Workers" template). The account and zone are named in web/wrangler.toml.
+# Workers" template, limited to the zone yamrajkhadka.com.np). The account is named in web/wrangler.toml; the route
+# is attached outside the deploy, so the key only uploads the Worker.
 name: deploy-website
 
 on:

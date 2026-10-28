@@ -1,8 +1,10 @@
 # nepalmonitor.yamrajkhadka.com.np on Cloudflare (free plan): static files, served free and without limit; worker.js
 # only gives the share image its content type.
 # `npm run build` writes out/; .github/workflows/deploy-website.yml rebuilds and deploys it every 3 hours (so the
-# live pages stay current) and whenever web/ changes on main. The route takes the hostname over as soon as it is
-# deployed (its DNS record is proxied by Cloudflare); monitornepal. 301s here from the Worker domain-redirects.
+# live pages stay current) and whenever web/ changes on main. monitornepal. 301s here from the Worker domain-redirects.
+# The route nepalmonitor.yamrajkhadka.com.np/* (its DNS record is proxied by Cloudflare) was attached once, outside
+# this file: publishing routes from here needs a key with access to every zone, and `wrangler deploy` leaves routes
+# that aren't listed here alone. See it under Workers & Pages -> nepalmonitor -> Settings -> Domains & Routes.
 name = "nepalmonitor"
 account_id = "0f6802281dc6fd8bcd7bf4f780b37a46"
 main = "worker.js"
@@ -17,7 +19,3 @@ binding = "ASSETS"
 html_handling = "auto-trailing-slash"
 not_found_handling = "404-page"
 run_worker_first = ["/opengraph-image"]
-
-[[routes]]
-pattern = "nepalmonitor.yamrajkhadka.com.np/*"
-zone_id = "7021b2366c32b3eef7b18687055c912d" # yamrajkhadka.com.np; an id, so the deploy token needs no zone access

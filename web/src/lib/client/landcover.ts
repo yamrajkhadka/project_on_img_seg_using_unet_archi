@@ -152,10 +152,31 @@ async function ort(): Promise<Ort> {
   return ortPromise;
 }
 
+// Cloudflare serves files of up to 25 MiB, so each ~30 MiB model is published in two parts
+// (scripts/fit-cloudflare-limits.mjs) and joined here.
+const MODEL_PARTS = 2;
+
+async function modelBytes(name: string): Promise<Uint8Array> {
+  const parts = await Promise.all(
+    Array.from({ length: MODEL_PARTS }, async (_, i) => {
+      const res = await fetch(`/models/${name}.onnx.part${i}`);
+      if (!res.ok) throw new Error(`Could not load the ${name} model (part ${i}: HTTP ${res.status})`);
+      return new Uint8Array(await res.arrayBuffer());
+    }),
+  );
+  const bytes = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
+  let offset = 0;
+  for (const part of parts) {
+    bytes.set(part, offset);
+    offset += part.length;
+  }
+  return bytes;
+}
+
 export function loadModel(key: ModelKey): Promise<import("onnxruntime-web").InferenceSession> {
   if (!sessions.has(key)) {
-    sessions.set(key, ort().then((m) => m.InferenceSession.create(`/models/${key === "nepal" ? "unet_nepal" : "unet_deepglobe"}.onnx`,
-      { executionProviders: ["wasm"], graphOptimizationLevel: "all" })));
+    sessions.set(key, Promise.all([ort(), modelBytes(key === "nepal" ? "unet_nepal" : "unet_deepglobe")]).then(([m, bytes]) =>
+      m.InferenceSession.create(bytes, { executionProviders: ["wasm"], graphOptimizationLevel: "all" })));
   }
   return sessions.get(key)!;
 }

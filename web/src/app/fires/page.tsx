@@ -12,7 +12,7 @@ export const revalidate = 1800;
 
 export const metadata: Metadata = {
   title: "Forest Fires in Nepal Today: Live Fire Map by District",
-  description: "Active forest fires in Nepal detected by NASA satellites in the last 24 hours and 7 days, mapped and counted by district and province, updated every 30 minutes.",
+  description: "Active forest fires in Nepal detected by NASA satellites in the last 24 hours and 7 days, mapped and counted by district and province, updated every 3 hours.",
   alternates: { canonical: "/fires" },
 };
 
@@ -40,7 +40,7 @@ export default async function Page() {
   return (
     <>
       <PageHeader eyebrow={`Live · ${nptDate(new Date())}`} title="Forest fires in Nepal"
-        intro={<p>Satellite fire detections inside Nepal from NASA&apos;s VIIRS sensors, refreshed every 30 minutes, counted by district.</p>} />
+        intro={<p>Satellite fire detections inside Nepal from NASA&apos;s VIIRS sensors, refreshed every 3 hours, counted by district.</p>} />
       <div className="mb-8 grid gap-4 sm:grid-cols-3">
         <Stat label="Last 24 hours" value={day ? fmt(day.length) : "—"} sub="fire detections" />
         <Stat label="Last 7 days" value={week ? fmt(week.length) : "—"} sub="fire detections" />

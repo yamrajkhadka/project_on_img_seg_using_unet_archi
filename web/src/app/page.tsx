@@ -32,7 +32,7 @@ export default async function Home() {
   return (
     <>
       <PageHeader eyebrow={`Live · ${nptDate(new Date())}`} title="Nepal right now"
-        intro={<p>Air quality, weather, earthquakes, forest fires and river flows across Nepal, updated every few minutes, and an AI map of the country&apos;s land cover. Pick a <Link href="/districts">district</Link> or a <Link href="/municipalities">municipality</Link> for local detail.</p>} />
+        intro={<p>Air quality, weather, earthquakes, forest fires and river flows across Nepal, updated every 3 hours, and an AI map of the country&apos;s land cover. Pick a <Link href="/districts">district</Link> or a <Link href="/municipalities">municipality</Link> for local detail.</p>} />
 
       {alerts.length > 0 && <div className="mb-8"><AlertList alerts={alerts} /></div>}
 

@@ -10,7 +10,7 @@ export const revalidate = 600;
 
 export const metadata: Metadata = {
   title: "Earthquake in Nepal Today: Latest Earthquakes, Live Map & History",
-  description: "Latest earthquakes in and around Nepal, updated every 10 minutes from USGS: magnitude, location, depth and time in Nepal Standard Time, with a live map and the strongest earthquakes since 1900.",
+  description: "Latest earthquakes in and around Nepal, updated every 3 hours from USGS: magnitude, location, depth and time in Nepal Standard Time, with a live map and the strongest earthquakes since 1900.",
   alternates: { canonical: "/earthquakes" },
 };
 
@@ -26,7 +26,7 @@ export default async function Page() {
   ];
   return (
     <>
-      <PageHeader eyebrow="Live · updated every 10 minutes" title="Earthquakes in Nepal"
+      <PageHeader eyebrow="Updated every 3 hours" title="Earthquakes in Nepal"
         intro={<p>Every earthquake of magnitude 2.5 or more in and around Nepal in the last 30 days, from the US Geological Survey, with times in Nepal Standard Time, and the strongest earthquakes in the region since 1900.</p>} />
       <div className="mb-8 grid gap-4 sm:grid-cols-3">
         <Stat label="Latest" value={latest ? `M${latest.mag.toFixed(1)}` : "—"} sub={latest ? `${ago(latest.time)} · ${latest.place}` : "None in 30 days"} />

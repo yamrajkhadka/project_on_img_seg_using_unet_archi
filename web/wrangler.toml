@@ -1,0 +1,11 @@
+# nepalmonitor.yamrajkhadka.com.np on Cloudflare (free plan): static files only, served free and without limit.
+# `npm run build` writes out/; .github/workflows/deploy-website.yml rebuilds and deploys it every 3 hours (so the
+# live pages stay current) and whenever web/ changes on main.
+name = "nepalmonitor"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[assets]
+directory = "./out"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"

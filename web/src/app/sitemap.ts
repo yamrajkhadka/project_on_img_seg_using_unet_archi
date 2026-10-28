@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { landcover, regionsAt, rivers } from "@/lib/data";
 import { siteConfig } from "@/lib/site";
 
+// Written once at build time: the site is exported as static files.
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const u = (path: string, changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"], priority: number) =>

@@ -5,6 +5,9 @@ export const alt = `${siteConfig.name}: live air quality, weather, earthquakes, 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// Written once at build time: the site is exported as static files.
+export const dynamic = "force-static";
+
 export default function Image() {
   return new ImageResponse(
     (

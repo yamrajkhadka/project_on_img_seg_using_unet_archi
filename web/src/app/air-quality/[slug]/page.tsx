@@ -11,8 +11,10 @@ import { air, airMany } from "@/lib/live";
 
 export const revalidate = 1800;
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  return []; // rendered on first visit, then refreshed every 30 minutes
+  return regionsAt(2).map((r) => ({ slug: r.slug })); // every district, rebuilt on the site's schedule
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -53,7 +55,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <>
       <Breadcrumbs items={[{ href: "/air-quality", label: "Air quality" }, { label: place }]} />
       <PageHeader eyebrow={`Live · ${nptDate(new Date())} · ${province.name} Province`} title={`Air quality in ${place} today`}
-        intro={<p>Live air quality index and pollutants at {town.town}{town.town !== d.name ? `, the main town of ${d.name} district` : ""}, from the Copernicus (CAMS) air-quality forecast, refreshed every 30 minutes.</p>} />
+        intro={<p>Live air quality index and pollutants at {town.town}{town.town !== d.name ? `, the main town of ${d.name} district` : ""}, from the Copernicus (CAMS) air-quality forecast, refreshed every 3 hours.</p>} />
       {c ? (
         <>
           <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

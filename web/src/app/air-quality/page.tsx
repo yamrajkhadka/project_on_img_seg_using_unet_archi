@@ -23,7 +23,7 @@ export default async function Page() {
   return (
     <>
       <PageHeader eyebrow={`Live · ${nptDate(new Date())}`} title="Air quality in Nepal today"
-        intro={<p>US Air Quality Index and fine-particle (PM2.5) pollution at the main town of each of Nepal&apos;s 77 districts, refreshed every 30 minutes. Winter and spring smog from fires, brick kilns, traffic and temperature inversions makes Nepal&apos;s air among the most polluted in South Asia from November to April.</p>} />
+        intro={<p>US Air Quality Index and fine-particle (PM2.5) pollution at the main town of each of Nepal&apos;s 77 districts, refreshed every 3 hours. Winter and spring smog from fires, brick kilns, traffic and temperature inversions makes Nepal&apos;s air among the most polluted in South Asia from November to April.</p>} />
       <RegionMap label="Air quality across Nepal" contextLevel={2} context={districts.map((d) => d.code)}
         points={rows.filter((r) => r.c).map((r) => ({ lon: r.t.lon, lat: r.t.lat, r: 5, color: TONE_COLOR[aqiBand(r.c!.us_aqi).tone] }))} />
       <Section title="All districts, most polluted first">

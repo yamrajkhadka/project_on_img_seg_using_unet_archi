@@ -1,16 +1,40 @@
-# Rebuilds nepalmonitor.yamrajkhadka.com.np on Vercel whenever the website or its data changes on main.
-# VERCEL_DEPLOY_HOOK is the project's deploy-hook URL (Vercel -> nepalmonitor -> Settings -> Git -> Deploy Hooks).
+# Builds nepalmonitor.yamrajkhadka.com.np (web/) as static files and deploys them to Cloudflare: whenever web/
+# changes on main, and every 3 hours so the live pages (air quality, weather, fires, earthquakes, alerts) stay
+# current. About 3 minutes a run, so the schedule fits the 2,000 free Actions minutes a month of a private repo.
+# Repository secrets: CLOUDFLARE_API_TOKEN (Cloudflare dashboard -> My Profile -> API Tokens -> "Edit Cloudflare
+# Workers" template) and CLOUDFLARE_ACCOUNT_ID.
 name: deploy-website
 
 on:
   push:
     branches: [main]
     paths: ["web/**"]
+  schedule:
+    - cron: "15 */3 * * *"
   workflow_dispatch:
+
+concurrency:
+  group: deploy-website
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: web
     steps:
-      - name: Trigger a production deployment
-        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - name: Deploy to Cloudflare
+        run: npx --yes wrangler@4.154.0 deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

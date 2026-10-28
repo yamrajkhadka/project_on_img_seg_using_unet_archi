@@ -8,7 +8,7 @@ export const revalidate = 900;
 
 export const metadata: Metadata = {
   title: "Nepal Alerts Today: Air Pollution, Fires, Earthquakes, Heavy Rain & Floods",
-  description: "Live alerts for Nepal: unhealthy air, unusual forest-fire activity, strong earthquakes, heavy-rain forecasts and rivers above flood levels, checked every 15 minutes.",
+  description: "Live alerts for Nepal: unhealthy air, unusual forest-fire activity, strong earthquakes, heavy-rain forecasts and rivers above flood levels, checked every 3 hours.",
   alternates: { canonical: "/alerts" },
 };
 
@@ -17,7 +17,7 @@ export default async function Page() {
   return (
     <>
       <PageHeader eyebrow={`Live · ${nptDate(new Date())}`} title="Alerts for Nepal"
-        intro={<p>Checked every 15 minutes from live data. These are automated signals, not official warnings: always follow the Department of Hydrology and Meteorology and the National Disaster Risk Reduction and Management Authority.</p>} />
+        intro={<p>Checked every 3 hours from live data. These are automated signals, not official warnings: always follow the Department of Hydrology and Meteorology and the National Disaster Risk Reduction and Management Authority.</p>} />
       <AlertList alerts={alerts} />
       <Section title="What triggers an alert">
         <table className="data"><tbody>

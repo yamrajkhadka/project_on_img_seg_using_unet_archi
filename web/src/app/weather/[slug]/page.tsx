@@ -4,14 +4,16 @@ import { notFound } from "next/navigation";
 import { areaTitle } from "@/components/AreaPage";
 import { BarChart, HourlyChart } from "@/components/charts";
 import { Breadcrumbs, JsonLd, PageHeader, Section, Source, Stat } from "@/components/ui";
-import { placeLabel, regionByCode, regionBySlug, townOf } from "@/lib/data";
+import { placeLabel, regionByCode, regionBySlug, regionsAt, townOf } from "@/lib/data";
 import { fmt, nptDate, WEATHER_CODES } from "@/lib/format";
 import { weather } from "@/lib/live";
 
 export const revalidate = 1800;
 
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  return []; // rendered on first visit, then refreshed every 30 minutes
+  return regionsAt(2).map((r) => ({ slug: r.slug })); // every district, rebuilt on the site's schedule
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -49,7 +51,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     <>
       <Breadcrumbs items={[{ href: "/weather", label: "Weather" }, { label: place }]} />
       <PageHeader eyebrow={`Live · ${nptDate(new Date())} · ${province.name} Province`} title={`Weather in ${place}`}
-        intro={<p>Current weather and the 7-day forecast for {town.town}{town.town !== d.name ? `, the main town of ${d.name} district` : ""}, from the ECMWF and national weather models (Open-Meteo), refreshed every 30 minutes.</p>} />
+        intro={<p>Current weather and the 7-day forecast for {town.town}{town.town !== d.name ? `, the main town of ${d.name} district` : ""}, from the ECMWF and national weather models (Open-Meteo), refreshed every 3 hours.</p>} />
       {w && c ? (
         <>
           <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

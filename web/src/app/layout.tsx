@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import { AdSense } from "@/components/AdSense";
 import { JsonLd } from "@/components/ui";
 import { nav, siteConfig } from "@/lib/site";
 import "./globals.css";
@@ -32,7 +31,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen">
-        <AdSense client={siteConfig.adsenseClient} />
         <JsonLd data={{
           "@context": "https://schema.org", "@type": "WebSite", name: siteConfig.name, url: siteConfig.url,
           description: siteConfig.description, inLanguage: "en",

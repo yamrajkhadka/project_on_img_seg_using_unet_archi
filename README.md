@@ -127,6 +127,10 @@ fixed in the code: every timeline, from a single day to the decades view, runs t
 checks every live data source and GitHub emails the owner if one has changed. `requirements.txt` caps every library below its
 next major version, so a restart years from now cannot pull in a breaking release.
 
+If the app ever shows **“Oh no. Error running app”**, open the app from the Streamlit Cloud workspace and use
+**Reboot**; if that does not help, delete the app and redeploy it from this branch with a current Python version.
+The error page is served by Cloud itself, so it cannot be restarted from the public URL.
+
 ## Reproduce the research
 
 | Script | Purpose |

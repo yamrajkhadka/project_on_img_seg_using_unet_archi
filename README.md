@@ -127,9 +127,11 @@ fixed in the code: every timeline, from a single day to the decades view, runs t
 checks every live data source and GitHub emails the owner if one has changed. `requirements.txt` caps every library below its
 next major version, so a restart years from now cannot pull in a breaking release.
 
-If the app ever shows **“Oh no. Error running app”**, open the app from the Streamlit Cloud workspace and use
-**Reboot**; if that does not help, delete the app and redeploy it from this branch with a current Python version.
-The error page is served by Cloud itself, so it cannot be restarted from the public URL.
+If the app ever shows **“Oh no. Error running app”**, open the app's logs first (Manage app). A
+`Failed to download the sources for repository` line means Cloud lost read access to this private repo: grant the
+Streamlit GitHub App access to it under GitHub → Settings → Applications, then use **Reboot** in Streamlit Cloud.
+A reboot is required because Cloud only syncs new commits into an existing checkout; it does not re-clone on a
+push, so pushing alone cannot recover the app.
 
 ## Reproduce the research
 

@@ -109,29 +109,6 @@ streamlit run app_alpha.py
 Optional: copy `.streamlit/secrets.toml.example` to `.streamlit/secrets.toml` and add a free NASA FIRMS key to fill
 fire records between 1 January and seven days ago for the current year.
 
-## Deploying without changing the paper's link
-
-The URL printed in the paper belongs to the Streamlit Community Cloud app that runs **`app_alpha.py`** from the
-**`main`** branch of [`yamrajkhadka/project_on_img_seg_using_unet_archi`](https://github.com/yamrajkhadka/project_on_img_seg_using_unet_archi).
-Pushing this code to that branch updates the app in place: same URL, same Python version, new app. The original demo
-is kept verbatim in `legacy/`, and the notebooks and `deepglobe_unet_jay.keras` stay where the paper says they are.
-TensorFlow is no longer needed at runtime, so the app installs and starts much faster.
-
-**It keeps itself up to date.** The live panels (fires, earthquakes, weather, air quality, rivers, satellite passes)
-are fetched fresh on every visit. Once a month, `.github/workflows/refresh-atlas.yml` adds every newly published year
-(the next Sentinel-2 cloudless annual mosaic and the next 10 m reference map, found by `scripts/extend_years.py`),
-adds each finished year's river peaks, national climate (ERA5 calibrated to the World Bank series) and timeline
-events (M6+ earthquakes, floods above the 10-year level), classifies the atlas sites for every new year,
-re-classifies the latest high-resolution imagery and commits the result, which redeploys the app. No year is
-fixed in the code: every timeline, from a single day to the decades view, runs to the present and keeps growing. A day after, `.github/workflows/tests.yml` also
-checks every live data source and GitHub emails the owner if one has changed. `requirements.txt` caps every library below its
-next major version, so a restart years from now cannot pull in a breaking release.
-
-If the app ever shows **“Oh no. Error running app”**, open the app's logs first (Manage app). A
-`Failed to download the sources for repository` line means Cloud lost read access to this private repo: grant the
-Streamlit GitHub App access to it under GitHub → Settings → Applications, then use **Reboot** in Streamlit Cloud.
-A reboot is required because Cloud only syncs new commits into an existing checkout; it does not re-clone on a
-push, so pushing alone cannot recover the app.
 
 ## Reproduce the research
 
